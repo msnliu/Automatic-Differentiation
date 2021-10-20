@@ -1,4 +1,4 @@
-AutoDiff: a package to easily and efficiently perform automatic differentation
+ad-AHJZ: a package to easily and efficiently perform automatic differentation
 Copyright (C) 2021 CS107 Students (Hari Raval, Joseph Zuccarelli, Aditi Memani, Zongjun Liu)
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
