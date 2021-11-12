@@ -8,7 +8,7 @@ Created on Sun Nov  7 16:11:04 2021
 import unittest
 import numpy as np
 
-from val_derv import val_derv
+from ad_AHJZ.val_derv import val_derv
 
 var1 = val_derv(1, 1)
 var2 = val_derv(2.2, 1)
@@ -19,6 +19,7 @@ var6 = val_derv(0, 1)
 var7 = val_derv(-3, 1)
 var8 = val_derv(3, 1)
 var9 = val_derv(0.5, 1)
+var10 = val_derv(0,1)
 
 
 class Val_Derv_Elem_Test(unittest.TestCase):
@@ -28,95 +29,71 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         sum1_derv = var1.derv + var2.derv
         sum1_rev_val = var2.val + var1.val
         sum1_rev_derv = var2.derv + var1.derv
-        sum2_val = var1.val + 2
-        sum2_rev_val = 2 + var1.val
-        sum3_val = var1 + 2
-        sum3_rev_val = 2 + var1
         self.assertAlmostEqual(3.2, sum1_val)
         self.assertAlmostEqual(2, sum1_derv)
         self.assertAlmostEqual(3.2, sum1_rev_val)
         self.assertAlmostEqual(2, sum1_rev_derv)
-        self.assertAlmostEqual(3, sum2_val)
-        self.assertAlmostEqual(3, sum2_rev_val)
-        self.assertAlmostEqual(3, sum3_val)
-        self.assertAlmostEqual(3, sum3_rev_val)
+        sum1 = var1 + 2
+        self.assertAlmostEqual(3, sum1.val)
 
     def test_scalar_sub(self):
-        sub1_val = var1.val - var2.val
-        sub1_derv = var1.derv - var2.derv
-        sub1_rev_val = var2.val - var1.val
-        sub1_rev_derv = var2.derv - var1.derv
-        sub2_val = var1.val - 2
-        sub2_rev_val = 2 - var1.val
-        sub3_val = var1 - 2
-        sub3_rev_val = 2 - var1
-        self.assertAlmostEqual(-1.2, sub1_val)
-        self.assertAlmostEqual(0, sub1_derv)
-        self.assertAlmostEqual(1.2, sub1_rev_val)
-        self.assertAlmostEqual(0, sub1_rev_derv)
-        self.assertAlmostEqual(1.2, sub2_val)
-        self.assertAlmostEqual(0, sub2_rev_val)
-        self.assertAlmostEqual(-1, sub3_val)
-        self.assertAlmostEqual(1, sub3_rev_val)
+        sub1_val = var1 - var2
+        sub1_rev_val = var2- var1
+        self.assertAlmostEqual(-1.2, sub1_val.val)
+        self.assertAlmostEqual(0, sub1_val.derv)
+        self.assertAlmostEqual(1.2, sub1_rev_val.val)
+        self.assertAlmostEqual(0, sub1_rev_val.derv)
+        sub1 = var1 - 2
+        self.assertAlmostEqual(-1, sub1.val)
+        sub2 = 2 -var1
+        self.assertAlmostEqual(1, sub2.val)
 
     def test_scalar_mul(self):
-        prod1_val = var1.val * var2.val
-        prod1_derv = var1.derv * var2.derv
-        prod1_rev_val = var2.val * var1.val
-        prod1_rev_derv = var2.derv * var1.derv
-        prod2_val = var1.val * 2
-        prod2_rev_val = 2 * var1.val
-        prod3_val = var1 * 2
-        prod3_rev_val = 2 * var1
-        self.assertAlmostEqual(2.2, prod1_val)
-        self.assertAlmostEqual(1, prod1_derv)
-        self.assertAlmostEqual(2.2, prod1_rev_val)
-        self.assertAlmostEqual(1, prod1_rev_derv)
-        self.assertAlmostEqual(2, prod2_val)
-        self.assertAlmostEqual(2, prod2_rev_val)
-        self.assertAlmostEqual(2, prod3_val)
-        self.assertAlmostEqual(2, prod3_rev_val)
+        prod1_val = var1 * var2
+        prod1_rev_val = var2 * var1
+        self.assertAlmostEqual(2.2, prod1_val.val)
+        self.assertAlmostEqual(3.2, prod1_val.derv)
+        self.assertAlmostEqual(2.2, prod1_rev_val.val)
+        self.assertAlmostEqual(3.2, prod1_rev_val.derv)
+        
+        prod1 = var1 * 2
+        self.assertAlmostEqual(2, prod1.val)
+        prod2 = 2 * var1
+        self.assertAlmostEqual(2, prod2.val)
+
 
     def test_scalar_trudiv(self):
-        div1_val = var1.val / var5.val
-        div1_derv = var1.derv / var5.derv
-        div1_rev_val = var5.val / var1.val
-        div1_rev_derv = var5.derv / var1.derv
-        div2_val = var1.val / 2
-        div2_rev_val = 2 / var1.val
-        div3_val = var1 / 2
-        div3_rev_val = 2 / var1
-        self.assertAlmostEqual(0.5, div1_val)
-        self.assertAlmostEqual(1, div1_derv)
-        self.assertAlmostEqual(2, div1_rev_val)
-        self.assertAlmostEqual(1, div1_rev_derv)
-        self.assertAlmostEqual(0.5, div2_val)
-        self.assertAlmostEqual(2, div2_rev_val)
-        self.assertAlmostEqual(0.5, div3_val)
-        self.assertAlmostEqual(2, div3_rev_val)
+        div1_val = var1 / var5
+        div1_rev_val = var5 / var1
+        self.assertAlmostEqual(0.5, div1_val.val)
+        self.assertAlmostEqual(0.25, div1_val.derv)
+        self.assertAlmostEqual(2, div1_rev_val.val)
+        self.assertAlmostEqual(-1.0, div1_rev_val.derv)
+        div1 = var1 / 2
+        self.assertAlmostEqual(0.5, div1.val)
+        div2 = 2 / var1
+        self.assertAlmostEqual(2, div2.val)
 
     def test_scalar_truedive_zeroError(self):
         with self.assertRaises(ZeroDivisionError) as e:
-            div1_val = var1.val / 0
+            div1 = var1 / 0
         self.assertEqual('ERROR: Denominator in division should not be 0', str(e.exception))
 
         with self.assertRaises(ZeroDivisionError) as e:
-            div2_val = var1.val / var6.val
+            div2 = var1 / var6
         self.assertEqual('ERROR: Denominator in division should not be 0', str(e.exception))
 
         with self.assertRaises(ZeroDivisionError) as e:
-            div3_val = 3 / var6.val
+            div3= 3 / var6
         self.assertEqual('ERROR: Denominator in division should not be 0', str(e.exception))
 
     def test_scalar_neg(self):
-        div1_val = -var1.val
-        div1_derv = -var1.derv
-        div2_val = -var4.val
-        div2_derv = -var4.derv
-        self.assertAlmostEqual(-1, div1_val)
-        self.assertAlmostEqual(-1, div1_derv)
-        self.assertAlmostEqual(5.3, div2_val)
-        self.assertAlmostEqual(-1, div2_derv)
+        div1_val = -var1
+        div2_val = -var4
+        self.assertAlmostEqual(-1, div1_val.val)
+        self.assertAlmostEqual(-1, div1_val.derv)
+        self.assertAlmostEqual(5.3, div2_val.val)
+        self.assertAlmostEqual(-1, div2_val.derv)
 
     def test_sin_scalar(self):
         result1 = var5.sin()
@@ -141,9 +118,9 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         result2 = var2.tan()
 
         self.assertAlmostEqual(np.tan(2), result1.val)
-        self.assertAlmostEqual(-2 / (np.cos(2) ** 2), result1.derv)
+        self.assertAlmostEqual(1 / (np.cos(2) ** 2), result1.derv)
         self.assertAlmostEqual(np.tan(2.2), result2.val)
-        self.assertAlmostEqual(-2 / (np.cos(2.2) ** 2), result2.deriv)
+        self.assertAlmostEqual(1 / (np.cos(2.2) ** 2), result2.derv)
 
     def test_tan_scalar_invalid_value(self):
         with self.assertRaises(ValueError) as e:
@@ -181,11 +158,11 @@ class Val_Derv_Elem_Test(unittest.TestCase):
     def test_log_scalar(self):
         result = var2.log()
         self.assertAlmostEqual(np.log(2.2), result.val)
-        self.assertAlmostEqual(1 * 1, result.derv)
+        self.assertAlmostEqual(1 / 2.2, result.derv)
 
         result2 = var2.log(10)
         self.assertAlmostEqual(np.log(2.2) / np.log(10), result2.val)
-        self.assertAlmostEqual((2.2 * np.log(10)) * 1, result2.derv)
+        self.assertAlmostEqual((1/(2.2 * np.log(10))) * 1, result2.derv)
 
     def test_log_scalar_invalid_value(self):
         with self.assertRaises(ValueError) as e:
@@ -206,9 +183,9 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         result2 = var1.exp()
 
         self.assertAlmostEqual(np.exp(2.2), result1.val)
-        self.assertAlmostEqual(np.exp(2.2) * 1, result1.derivative)
+        self.assertAlmostEqual(np.exp(2.2) * 1, result1.derv)
         self.assertAlmostEqual(np.exp(1), result2.val)
-        self.assertAlmostEqual(np.exp(1) * 1, result2.derivative)
+        self.assertAlmostEqual(np.exp(1) * 1, result2.derv)
 
     def test_scalar_arcsin(self):
         arc_sin_res = var9.arcsin()
@@ -240,19 +217,19 @@ class Val_Derv_Elem_Test(unittest.TestCase):
     def test_scalar_arccos_invalid(self):
         with self.assertRaises(ValueError) as e:
             var7.arccos()
-        self.assertEqual("ERROR: Input to arcsin() should be between -1 and 1", str(e.exception))
+        self.assertEqual("ERROR: Input to arccos() should be between -1 and 1", str(e.exception))
 
         with self.assertRaises(ValueError) as e:
             var8.arccos()
-        self.assertEqual("ERROR: Input to arcsin() should be between -1 and 1", str(e.exception))
+        self.assertEqual("ERROR: Input to arccos() should be between -1 and 1", str(e.exception))
 
         with self.assertRaises(ValueError) as e:
             var1.arccos()
-        self.assertEqual("ERROR: Input to arcsin() should be between -1 and 1", str(e.exception))
+        self.assertEqual("ERROR: Input to arccos() should be between -1 and 1", str(e.exception))
 
         with self.assertRaises(ValueError) as e:
             var3.arccos()
-        self.assertEqual("ERROR: Input to arcsin() should be between -1 and 1", str(e.exception))
+        self.assertEqual("ERROR: Input to arccos() should be between -1 and 1", str(e.exception))
 
     def test_scalar_arctan(self):
         arc_tan_res_float = var9.arctan()
@@ -271,23 +248,23 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         # integer base integer power
         power_res_int_int = var8 ** var8
         self.assertAlmostEqual(3 ** 3, power_res_int_int.val)
-        self.assertAlmostEqual((3 ** 3)(np.log(3) + 3 / 3), power_res_int_int.derv)
+        self.assertAlmostEqual((3 ** 3)*(np.log(3) + 3 / 3), power_res_int_int.derv)
         # float base integer power
         power_res_float_int = var9 ** var8
         self.assertAlmostEqual(0.5 ** 3, power_res_float_int.val)
         self.assertAlmostEqual((0.5 ** 3) * (np.log(0.5) + 3 / 0.5), power_res_float_int.derv)
         # float base float power
         power_res_float_float = var9 ** var9
-        self.assertAlmostEqual(0.5 ** 0.5, power_res_float_int.val)
+        self.assertAlmostEqual(0.5 ** 0.5, power_res_float_float.val)
         self.assertAlmostEqual((0.5 ** 0.5) * (np.log(0.5) + 0.5 / 0.5), power_res_float_float.derv)
 
         power_res_real = var8 ** 2
         self.assertAlmostEqual(3 ** 2, power_res_real.val)
-        self.assertAlmostEqual((3 ** 2)(2 / 3), power_res_real.derv)
+        self.assertAlmostEqual((3 ** 2) * (2 / 3), power_res_real.derv)
 
     def test_scalar_power_invalid(self):
         with self.assertRaises(ValueError) as e:
-            var1 ** var9
+            var10 ** var9
         self.assertEqual("ERROR: Power function does not have a derivative at 0 if the exponent is less than 1", str(e.exception))
 
         with self.assertRaises(ValueError) as e:

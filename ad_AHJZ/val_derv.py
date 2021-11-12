@@ -322,7 +322,7 @@ class val_derv:
             if self.val == 0 and other.val < 1:
                 raise ValueError("ERROR: Power function does not have a derivative at 0 if the exponent is less than 1")
             f = self.val ** other.val
-            f_prime = (self.val ** (other.derv - 1)) * self.derv * other.val + (
+            f_prime = (self.val ** (other.val - 1)) * self.derv * other.val + (
                         self.val ** other.val) * other.derv * np.log(self.val)
             return val_derv(f, f_prime)
 
@@ -373,7 +373,7 @@ class val_derv:
         Examples
         --------
         """
-        return other - self
+        return other + (-self)
 
     def __rmul__(self, other):
         """
@@ -418,7 +418,18 @@ class val_derv:
         Examples
         --------
         """
-        return other / self
+        try:
+            if self.val == 0:
+                raise ZeroDivisionError("ERROR: Denominator in division should not be 0")
+            f = other.val / self.val
+            f_prime = (other.derv * self.val - other.val * self.derv) / self.val ** 2
+            return val_derv(f, f_prime)
+        except AttributeError:
+            if self.val == 0: #could be self.derv or even self double check
+                raise ZeroDivisionError("ERROR: Denominator in division should not be 0")
+            f = other / self.val
+            f_prime = -other * self.derv / self.val ** 2
+            return val_derv(f, f_prime)
 
     def __rpow__(self, other):
         """
@@ -693,7 +704,7 @@ class val_derv:
         Examples
         --------
         """
-        if -1 >= self.val >= 1:
+        if -1 >= self.val  or self.val >= 1:
             raise ValueError("ERROR: Input to arcsin() should be between -1 and 1")
         f = np.arcsin(self.val)
         f_prime = 1 / (1 - self.val ** 2) ** 0.5
@@ -744,7 +755,7 @@ class val_derv:
         Examples
         --------
         """
-        if -1 >= self.val >= 1:
+        if -1 >= self.val or self.val >= 1:
             raise ValueError("ERROR: Input to arccos() should be between -1 and 1")
         f = np.arccos(self.val)
         f_prime = - 1 / (1 - self.val ** 2) ** 0.5
