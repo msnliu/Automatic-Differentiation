@@ -419,18 +419,12 @@ class val_derv:
         Examples
         --------
         """
-        try:
-            if self.val == 0:
-                raise ZeroDivisionError("ERROR: Denominator in division should not be 0")
-            f = other.val / self.val
-            f_prime = (other.derv * self.val - other.val * self.derv) / self.val ** 2
-            return val_derv(f, f_prime)
-        except AttributeError:
-            if self.val == 0: #could be self.derv or even self double check
-                raise ZeroDivisionError("ERROR: Denominator in division should not be 0")
-            f = other / self.val
-            f_prime = -other * self.derv / self.val ** 2
-            return val_derv(f, f_prime)
+    
+        if self.val == 0:
+            raise ZeroDivisionError("ERROR: Denominator in division should not be 0")
+        f = other / self.val
+        f_prime = - other * self.derv / self.val ** 2
+        return val_derv(f, f_prime)
 
     def __rpow__(self, other):
         """
@@ -457,7 +451,9 @@ class val_derv:
         ------
         """
         
-        return other ** self
+        f = other ** self.val
+        f_prime = (other ** self.val) * self.derv * np.log(other)
+        return val_derv(f, f_prime)
 
     def sqrt(self):
         """

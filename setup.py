@@ -11,7 +11,7 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-setuptools.setup(name='ad-AJHZ',
+setuptools.setup(name='ad_AHJZ',
       version='1.0',
       packages= setuptools.find_packages(),
       author="Aditi Memani, Hari Raval, Joseph Zuccarelli, liuzongjun",

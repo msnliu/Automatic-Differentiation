@@ -63,19 +63,19 @@ class Val_Derv_Elem_Test(unittest.TestCase):
 
     def test_scalar_trudiv(self):
         div1_val = var1 / var5
-        div1_rev_val = var1.__rtruediv__(var5)
+        div1_rev_val = 2/var1
 
         self.assertAlmostEqual(0.5, div1_val.val)
         self.assertAlmostEqual(0.25, div1_val.derv)
         self.assertAlmostEqual(2, div1_rev_val.val)
-        self.assertAlmostEqual(-1.0, div1_rev_val.derv)
+        self.assertAlmostEqual(-2, div1_rev_val.derv)
 
         div1 = var1 / 2
         self.assertAlmostEqual(0.5, div1.val)
         self.assertAlmostEqual(0.5, div1.derv)
-        div2 = var1.__rtruediv__(2)
-        self.assertAlmostEqual(2, div2.val)
-        self.assertAlmostEqual(-2, div2.derv)
+#        div2 = var1.__rtruediv__(2)
+#        self.assertAlmostEqual(2, div2.val)
+#        self.assertAlmostEqual(-2, div2.derv)
 
     def test_scalar_trudiv_zeroError(self):
         with self.assertRaises(ZeroDivisionError) as e:
@@ -89,10 +89,6 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         with self.assertRaises(ZeroDivisionError) as e:
             div3 = 3 / var6
         self.assertEqual('ERROR: Denominator in division should not be 0', str(e.exception))
-
-        # with self.assertRaises(ZeroDivisionError) as e:
-        #     div4 = 0.__rtruediv__(var1)
-        # self.assertEqual('ERROR: Denominator in division should not be 0', str(e.exception))
 
     def test_scalar_neg(self):
         div1_val = -var1
@@ -269,9 +265,9 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         self.assertAlmostEqual(3 ** 2, power_res_real.val)
         self.assertAlmostEqual((3 ** 2) * (2 / 3), power_res_real.derv)
 
-        # power_res_real = 2 ** var8
-        # self.assertAlmostEqual(2 ** 3, power_res_real.val)
-        # self.assertAlmostEqual((2 ** 3) * (np.log(2)), power_res_real.derv)
+        power_res_real = 2 ** var8
+        self.assertAlmostEqual(2 ** 3, power_res_real.val)
+        self.assertAlmostEqual((2 ** 3) * (np.log(2)), power_res_real.derv)
 
     def test_scalar_power_invalid(self):
         with self.assertRaises(ValueError) as e:
