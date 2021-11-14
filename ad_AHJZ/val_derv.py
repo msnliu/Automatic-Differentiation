@@ -29,9 +29,10 @@ def var_type(x):
     else:
         for i in x:
             if isinstance(i, (float, int, np.int32, np.int64, np.float64)):
-                return True
+                pass
             else:
                 return False
+        return True
 
 
 class val_derv:
@@ -70,7 +71,7 @@ class val_derv:
         -------
         Formatted string representation of val_derv object
         """
-        return f'Values:{self.val}, Derviatives:{self.derv}'
+        return f'Values:{self.val}, Derivatives:{self.derv}'
 
     @property
     def val(self):
@@ -133,11 +134,12 @@ class val_derv:
         Examples
         --------
        """
-        if not var_type(val):
-            raise TypeError('ERROR: Input value should be an int or float.')
-        else:
-            self._val = val
 
+        if var_type(val):
+            self._val = val
+        else:
+            raise TypeError('ERROR: Input value should be an int or float.')
+        
     @derv.setter
     def derv(self, derv):
         """
@@ -163,16 +165,16 @@ class val_derv:
         Examples
         --------
         """
-        if var_type(derv):
+        if var_type(derv): 
             self._derv = derv
         elif isinstance(derv, np.ndarray) and len(derv.shape) == 1:
             try:
                 derv = derv.astype(float)
             except ValueError:
-                raise TypeError('ERROR: Input contains non int/float values')
+                raise ValueError('ERROR: Input value should be an int or float.')
             self._derv = derv
         else:
-            raise TypeError('ERROR: Input contains should be an int, float, or a 1D numpy array of ints/floats.')
+            raise TypeError('ERROR: Input value must contain an array of ints/floats or be a scalar int/float.')
 
     def __add__(self, other):
         """
@@ -316,7 +318,6 @@ class val_derv:
         --------
         """
         try:
-            # we did the same condition check for the dual number
             if self.val < 0 and other.val % 1 != 0 and other.val.as_integer_ratio()[1] % 2 == 0:
                 raise ValueError("ERROR: Cannot raise a negative number to a fraction with even denominator")
             if self.val == 0 and other.val < 1:
@@ -455,6 +456,7 @@ class val_derv:
         Examples
         ------
         """
+        
         return other ** self
 
     def sqrt(self):
@@ -761,23 +763,4 @@ class val_derv:
         f_prime = - 1 / (1 - self.val ** 2) ** 0.5
         return val_derv(f, self.derv * f_prime)
 
-
-# TODO: (in val_dervs) ADD examples to all docstrings of usage/expected with input and outputs
-
-# TODO: (in val_dervs) in pow, we skip the check of raising negative number to a power of non-integer
-
-# TODO: (in val_dervs) in pow, we skip power does not have a derivative at 0 if the exponent is less than 1
-
-# TODO: (in val_dervs) rename val_derv object to something like Automatic_Diff object?
-
-# TODO: (in val_dervs) change the set-up of the compute-derivs function
-
-# TODO: (in forward_mode) add doc-strings for all functions in this file
-
-# TODO: (in forward_mode) enable a user to input functions in the form 3 * x[0] + x[1] as well as 3x + y (not now)
-
-# TODO: (in val_dervs) write test cases for the setter/getter methods in val_der.py
-
-# TODO: (in val_dervs) write test cases for functions in forward_mode.py
-
-# TODO: (in val_dervs) power() function: check the condition check for the dual number case and if its correct...
+    
