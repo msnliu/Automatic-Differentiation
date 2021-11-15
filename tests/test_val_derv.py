@@ -73,9 +73,6 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         div1 = var1 / 2
         self.assertAlmostEqual(0.5, div1.val)
         self.assertAlmostEqual(0.5, div1.derv)
-#        div2 = var1.__rtruediv__(2)
-#        self.assertAlmostEqual(2, div2.val)
-#        self.assertAlmostEqual(-2, div2.derv)
 
     def test_scalar_trudiv_zeroError(self):
         with self.assertRaises(ZeroDivisionError) as e:
