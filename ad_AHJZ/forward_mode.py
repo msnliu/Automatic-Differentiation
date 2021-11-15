@@ -7,17 +7,14 @@
 #################################################################################
 
 import numpy as np
-from ad_AHJZ.val_derv import val_derv
-
+# from ad_AHJZ.val_derv import val_derv
+from prep import val_derv
 
 def combine_vector_inputs(function_list, n_col):
     """
-    ########################
-    combine_vector_inputs(function_list, n_col)
-
     Parameters
     ----------
-    function_list: list object of elementary functions
+    function_list: list object of functions
     n_col: integer object that represents the number of columns
 
     Returns
@@ -27,7 +24,26 @@ def combine_vector_inputs(function_list, n_col):
 
     Examples
     --------
+    >>> def seed(position):
+    >>>     seed_vector = np.zeros(2)
+    >>>     seed_vector[position] = 1
+    >>>     return seed_vector
+
+    >>> inputs = [1, 2]
+    >>> var_init = []
+    >>> for i, value in enumerate(inputs):
+    >>>     var_init.append(val_derv(inputs[i], seed(i)))
+
+    >>> func = lambda x,y: np.array([x + y, x * y])
+    >>> res = func(*var_init)
+    >>> funct_val, funct_der = combine_vector_inputs(res, 2)
+    >>> print(funct_val)
+    [3. 2.]
+    >>> print(funct_der)
+    [[1. 1.]
+    [2. 1.]]
     """
+
     # determine the number of functions inputted
     number_functions = len(function_list)
 
@@ -42,82 +58,133 @@ def combine_vector_inputs(function_list, n_col):
 
     return funct_val, funct_der
 
-
 class forward_mode:
 
     def __init__(self, input_values, input_function):
-        """
-        ########################
-        __init__(self, input_values, input_function)
-
-        Constructor for the forward mode class.
-
-        Parameters
-        ----------
-        input_values: a list of input value
-        input_function: input function
-
-        Returns
-        -------
-        None
-        """
         self.inputs = input_values
         self.functions = input_function
 
     def get_function_value(self):
         """
-        ########################
-        get_function_value(self)
-
-        
-
         Parameters
         ----------
         None
 
         Returns
         -------
-        function value 
+        function value
 
         Examples
         --------
+        # get univariate scalar function value
+        >>> func = lambda x: x
+        >>> fm = forward_mode(1, func)
+        >>> fm.get_function_value()
+        1
+
+        # get univariate vector function value
+        >>> func = lambda x: (x, 2*x, x**2)
+        >>> fm = forward_mode(1, func)
+        >>> fm.get_function_value()
+        array([1., 2., 1.])
+
+        # get multivariate scalar function value
+        >>> func = lambda x, y: x + y
+        >>> fm = forward_mode(np.array([1, 1]), func)
+        >>> fm.get_function_value()
+        2
+
+        # get multivariate vector function value
+        >>> func = lambda x, y: (x.log() + y, x + y)
+        >>> fm = forward_mode(np.array([1, 1]), func)
+        >>> fm.get_function_value()
+        array([1., 2.])
         """
+
         return self.get_function_value_and_jacobian()[0]
 
     def get_jacobian(self):
         """
-        ########################
-        get_jacobian(self)
-
         Parameters
         ----------
         None
 
         Returns
         -------
-        Jacobian matrix
+        jacobian
 
         Examples
         --------
+        # get univariate scalar function jacobian
+        >>> func = lambda x: x
+        >>> fm = forward_mode(1, func)
+        >>> fm.get_jacobian()
+        array([1.])
+
+        # get univariate vector function jacobian
+        >>> func = lambda x: (x, 2*x, x**2)
+        >>> fm = forward_mode(1, func)
+        >>> fm.get_jacobian()
+        array([[1.],
+               [2.],
+               [2.]])
+
+        # get multivariate scalar function jacobian
+        >>> func = lambda x, y: x + y
+        >>> fm = forward_mode(np.array([1, 1]), func)
+        >>> fm.get_jacobian()
+        array([1., 1.])
+
+        # get multivariate vector function jacobian
+        >>> func = lambda x, y: (x.log() + y, x + y)
+        >>> fm = forward_mode(np.array([1, 1]), func)
+        >>> fm.get_jacobian()
+        array([[1., 1.],
+               [1., 1.]])
         """
+
         return self.get_function_value_and_jacobian()[1]
 
     def get_function_value_and_jacobian(self):
         """
-        ########################
-        get_function_value_and_jacobian(self)
-
         Parameters
         ----------
         None
 
         Returns
         -------
-        value and derivative of the input function
+        value and jacobian of the input function
 
         Examples
         --------
+        # get univariate scalar function value and jacobian
+        >>> func = lambda x: x
+        >>> fm = forward_mode(1, func)
+        >>> fm.get_function_value_and_jacobian()
+        (1, array([1.]))
+
+        # get univariate vector function value and jacobian
+        >>> func = lambda x: (x, 2*x, x**2)
+        >>> fm = forward_mode(1, func)
+        >>> fm.get_function_value_and_jacobian()
+        (array([1., 2., 1.]), array([[1.],
+                                     [2.],
+                                     [2.]]))
+
+        # get multivariate scalar function value and jacobian
+        >>> func = lambda x, y: x + y
+        >>> fm = forward_mode(np.array([1, 1]), func)
+        >>> fm.get_function_value_and_jacobian()
+        (2, array([1., 1.]))
+
+        # get multivariate vector function value and jacobian
+        >>> func = lambda x, y: (x.log() + y, x + y)
+        >>> fm = forward_mode(np.array([1, 1]), func)
+        >>> fm.get_function_value_and_jacobian()
+        (array([1., 2.]), array([[1., 1.],
+                                 [1., 1.]]))
         """
+
         # number of input values = number of variables = number of partial derivatives we want to compute
         try:
             # find the number of terms to evaluate
