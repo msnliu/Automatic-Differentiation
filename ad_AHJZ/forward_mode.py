@@ -7,7 +7,7 @@
 #################################################################################
 
 import numpy as np
-from val_derv import val_derv
+from ad_AHJZ.val_derv import val_derv
 
 
 def combine_vector_inputs(function_list, n_col):
@@ -216,7 +216,4 @@ class forward_mode:
         except AttributeError:
             # return the results for the vector case
             return combine_vector_inputs(res, number_res)
-x =3
-fx = lambda x: np.cos(x)**2
-fm = forward_mode(x, fx)
-print(fm.get_function_value_and_jacobian())
+

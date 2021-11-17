@@ -1,10 +1,9 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Nov  7 16:11:04 2021
-
-@author: aditimemani
-"""
+# Authors: Hari Raval, Zongjun Liu, Aditi Memani, Joseph Zuccarelli             #
+# Course: AC 207                                                                #
+# File: test_val_derv.py                                                        #
+# Description: Test the val_derv object functionality by creating a testing     #
+# testing suite using unittest                                                  #
+#################################################################################
 import unittest
 import numpy as np
 

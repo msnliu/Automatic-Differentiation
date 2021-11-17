@@ -20,6 +20,12 @@ def var_type(x):
     True or False depending on whether all of the elements within object x are either integers or floats
     Examples
     --------
+    >>>x = 3
+    >>>print(var_type(x))
+    True
+    >>>x = 'a'
+    >>>print(var_type(x))
+    False
     """
     if not isinstance(x, str) and np.isscalar(x):
         return True
@@ -61,6 +67,11 @@ class val_derv:
         Returns
         -------
         Formatted string representation of val_derv object
+
+        Examples
+        --------
+        >>>print(val_derv(1,2))
+        Values:1, Derivatives:2
         """
         return f'Values:{self.val}, Derivatives:{self.derv}'
 
@@ -78,6 +89,9 @@ class val_derv:
         val attribute of val_derv object
         Examples
         --------
+        >>>x = val_derv(1,1)
+        >>>print(x.val)
+        1
         """
         return self._val
 
@@ -95,6 +109,9 @@ class val_derv:
         derv attribute of val_derv object
         Examples
         --------
+        >>>x = val_derv(1,1)
+        >>>print(x.val)
+        1
         """
         return self._derv
 
@@ -112,6 +129,9 @@ class val_derv:
         None
         Examples
         --------
+        >>>x = val_derv(1,1)
+        >>>x.val = 2
+        2
        """
 
         if var_type(val):
@@ -138,6 +158,9 @@ class val_derv:
             If input contains a 1D numpy array of non-integer or non-float values
         Examples
         --------
+        >>>x = val_derv(1,1)
+        >>>x.derv = 2
+        2
         """
         if var_type(derv):
             self._derv = derv
@@ -163,6 +186,7 @@ class val_derv:
         A val_derv object that contains the value and derivative of the addition operation
 
         Examples
+        --------
         # add of variable with scalar derivative
         >>> x_1 = val_derv(1, 1)
         >>> x_2 = val_derv(1, 1)
@@ -198,6 +222,7 @@ class val_derv:
         A val_derv object that contains the value and derivative of the subtraction operation
 
         Examples
+        --------
         # subtraction of variable with scalar derivative
         >>> x_1 = val_derv(1, 1)
         >>> x_2 = val_derv(1, 1)
@@ -233,6 +258,7 @@ class val_derv:
         A val_derv object that contains the value and derivative of the multiplication operation
 
         Examples
+        --------
         # multiplication of variable with scalar derivative
         >>> x_1 = val_derv(1, 1)
         >>> x_2 = val_derv(1, 1)
@@ -272,6 +298,7 @@ class val_derv:
         ZeroDivisionError if denominator in division is zero
 
         Examples
+        --------
         # true division of variable with scalar derivative
         >>> x_1 = val_derv(1, 1)
         >>> x_2 = val_derv(1, 1)
@@ -323,6 +350,7 @@ class val_derv:
         A val_derv object that contains the value and derivative of the negation operation
 
         Examples
+        --------
         # negation of variable with scalar derivative
         >>> x = val_derv(1, 1)
         >>> print(-x)
@@ -356,6 +384,7 @@ class val_derv:
             If exponent is less than 1 and differentiation occurs at 0
 
         Examples
+        --------
         # power of variable with scalar derivative
         >>> x_1 = val_derv(1, 1)
         >>> x_2 = val_derv(1, 1)
@@ -414,6 +443,7 @@ class val_derv:
         A val_derv object that contains the value and derivative of the addition operation
 
         Examples
+        --------
         # radd of variable with scalar derivative
         >>> x_1 = 1
         >>> x_2 = val_derv(1, 1)
@@ -443,6 +473,7 @@ class val_derv:
         A val_derv object that contains the value and derivative of the subtraction operation
 
         Examples
+        --------
         # rsubtraction of variable with scalar derivative
         >>> x_1 = 1
         >>> x_2 = val_derv(1, 1)
@@ -472,6 +503,7 @@ class val_derv:
         A val_derv object that contains the value and derivative of the multiplication operation
 
         Examples
+        --------
         # rmul of variable with scalar derivative
         >>> x_1 = 1
         >>> x_2 = val_derv(1, 1)
@@ -505,6 +537,7 @@ class val_derv:
         ZeroDivisionError if denominator in division is zero
 
         Examples
+        --------
         # reverse true division of variable with scalar derivative
         >>> x_1 = 1
         >>> x_2 = val_derv(1, 1)
@@ -544,6 +577,7 @@ class val_derv:
         A val_derv object that contains the value and derivative of the power operation
 
         Examples
+        --------
         # reverse power of variable with scalar derivative
         >>> x_1 = 1
         >>> x_2 = val_derv(1, 1)
@@ -575,6 +609,7 @@ class val_derv:
         A val_derv object that contains the value and derivative of the square root function
 
         Examples
+        --------
         # sqrt of variable with scalar derivative
         >>> x = val_derv(1, 1)
         >>> print(x.sqrt())
@@ -610,6 +645,7 @@ class val_derv:
             If input base is equal to one
 
         Examples
+        --------
         # ValueError if self.val is less than ot equal to zero
         >>> x = val_derv(0, 1)
         >>> print(x.log())
@@ -672,6 +708,7 @@ class val_derv:
         A val_derv object that contains the value and derivative of the exponential function
 
         Examples
+        --------
         # exp of variable with scalar derivative
         >>> x = val_derv(0, 1)
         >>> print(x.exp())
@@ -702,6 +739,7 @@ class val_derv:
         A val_derv object that contains the value and derivative of the sine function
 
         Examples
+        --------
         # sin of variable with scalar derivative
         >>> x = val_derv(0, 1)
         >>> print(x.sin())
@@ -731,6 +769,7 @@ class val_derv:
         A val_derv object that contains the value and derivative of the cosine function
 
         Examples
+        --------
         # cos of variable with scalar derivative
         >>> x = val_derv(0, 1)
         >>> print(x.cos())
@@ -763,6 +802,7 @@ class val_derv:
         ValueError if input is an odd multiple of pi/2
 
         Examples
+        --------
         # tan of variable with scalar derivative
         >>> x = val_derv(0, 1)
         >>> print(x.tan())
@@ -800,6 +840,7 @@ class val_derv:
         A val_derv object that contains the value and derivative of the hyperbolic sine function
 
         Examples
+        --------
         # sinh of variable with scalar derivative
         >>> x = val_derv(0, 1)
         >>> print(x.sinh())
@@ -829,6 +870,7 @@ class val_derv:
         A val_derv object that contains the value and derivative of the hyperbolic cosine function
 
         Examples
+        --------
         # cosh of variable with scalar derivative
         >>> x = val_derv(0, 1)
         >>> print(x.cosh())
@@ -858,6 +900,7 @@ class val_derv:
         A val_derv object that contains the value and derivative of the hyperbolic tangent function
 
         Examples
+        --------
         # tanh of variable with scalar derivative
         >>> x = val_derv(0, 1)
         >>> print(x.tanh())
@@ -890,6 +933,7 @@ class val_derv:
         ValueError if input is not contained within the interval [-1,1]
 
         Examples
+        --------
         # arcsin of variable with scalar derivative
         >>> x = val_derv(0, 1)
         >>> print(x.arcsin())
@@ -907,7 +951,7 @@ class val_derv:
         --------
         """
 
-        if -1 >= self.val  or self.val >= 1:
+        if -1 >= self.val or self.val >= 1:
             raise ValueError("ERROR: Input to arcsin() should be between -1 and 1")
         f = np.arcsin(self.val)
         f_prime = 1 / (1 - self.val ** 2) ** 0.5
@@ -981,3 +1025,4 @@ class val_derv:
         f = np.arccos(self.val)
         f_prime = - 1 / (1 - self.val ** 2) ** 0.5
         return val_derv(f, self.derv * f_prime)
+

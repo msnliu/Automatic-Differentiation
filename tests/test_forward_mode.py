@@ -1,10 +1,9 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Nov 11 22:14:39 2021
-
-@author: aditimemani
-"""
+# Authors: Hari Raval, Zongjun Liu, Aditi Memani, Joseph Zuccarelli             #
+# Course: AC 207                                                                #
+# File: test_forward_mode.py                                                    #
+# Description: Test forward mode automatic differentiation by creating a        #
+# testing suite using unittest                                                  #
+#################################################################################
 
 import unittest
 import numpy as np
