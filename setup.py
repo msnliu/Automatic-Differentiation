@@ -11,8 +11,9 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
+
 setuptools.setup(name='ad_AHJZ',
-      version='1.0',
+      version='1.2',
       packages= setuptools.find_packages(),
       author="Aditi Memani, Hari Raval, Joseph Zuccarelli, liuzongjun",
       description="A Package that calculates Automatic Differentiation for both Scalar and Vector Inputs",
@@ -24,5 +25,5 @@ setuptools.setup(name='ad_AHJZ',
         "Operating System :: OS Independent",
       ],
       python_requires='>=3.6',
-      install_requires = [ 'numpy==1.19.3' ]
+      install_requires = ['numpy==1.19.3' ]
 )
