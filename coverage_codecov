@@ -1,0 +1,7 @@
+#!/bin/bash
+coverage run -m unittest discover -s tests/
+coverage report
+coverage xml
+curl -Os https://uploader.codecov.io/latest/macos/codecov
+chmod +x codecov
+./codecov -t 53e0875f-3502-40ec-adb9-16a4835398e8
