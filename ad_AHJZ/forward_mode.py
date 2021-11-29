@@ -7,7 +7,7 @@
 #################################################################################
 
 import numpy as np
-from ad_AHJZ.val_derv import val_derv
+from val_derv import val_derv
 
 
 def combine_vector_inputs(function_list, n_col):
