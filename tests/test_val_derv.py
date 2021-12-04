@@ -9,6 +9,7 @@ import numpy as np
 
 from ad_AHJZ.val_derv import val_derv, var_type
 
+# create multiple val_derv objects to use through all unit test cases
 var1 = val_derv(1, 1)
 var2 = val_derv(2.2, 1)
 var3 = val_derv(-1, 1)
@@ -23,6 +24,7 @@ var10 = val_derv(0, 1)
 
 class Val_Derv_Elem_Test(unittest.TestCase):
 
+    # test scalar addition operation
     def test_scalar_add(self):
         sum1_val = var1.val + var2.val
         sum1_derv = var1.derv + var2.derv
@@ -35,6 +37,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         sum1 = var1 + 2
         self.assertAlmostEqual(3, sum1.val)
 
+    # test scalar subtraction operation
     def test_scalar_sub(self):
         sub1_val = var1 - var2
         sub1_rev_val = var2 - var1
@@ -47,6 +50,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         sub2 = 2 - var1
         self.assertAlmostEqual(1, sub2.val)
 
+    # test scalar multiplication operation
     def test_scalar_mul(self):
         prod1_val = var1 * var2
         prod1_rev_val = var2 * var1
@@ -60,9 +64,10 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         prod2 = 2 * var1
         self.assertAlmostEqual(2, prod2.val)
 
+    # test scalar division operation
     def test_scalar_trudiv(self):
         div1_val = var1 / var5
-        div1_rev_val = 2/var1
+        div1_rev_val = 2 / var1
 
         self.assertAlmostEqual(0.5, div1_val.val)
         self.assertAlmostEqual(0.25, div1_val.derv)
@@ -73,6 +78,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         self.assertAlmostEqual(0.5, div1.val)
         self.assertAlmostEqual(0.5, div1.derv)
 
+    # test error handling in scalar division operation
     def test_scalar_trudiv_zeroError(self):
         with self.assertRaises(ZeroDivisionError) as e:
             div1 = var1 / 0
@@ -86,6 +92,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
             div3 = 3 / var6
         self.assertEqual('ERROR: Denominator in division should not be 0', str(e.exception))
 
+    # test scalar negation operation
     def test_scalar_neg(self):
         div1_val = -var1
         div2_val = -var4
@@ -94,6 +101,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         self.assertAlmostEqual(5.3, div2_val.val)
         self.assertAlmostEqual(-1, div2_val.derv)
 
+    # test scalar sine operation
     def test_sin_scalar(self):
         result1 = var5.sin()
         result2 = var2.sin()
@@ -103,6 +111,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         self.assertAlmostEqual(np.sin(2.2), result2.val)
         self.assertAlmostEqual(np.cos(2.2) * 1, result2.derv)
 
+    # test scalar cosine operation
     def test_cos_scalar(self):
         result1 = var5.cos()
         result2 = var2.cos()
@@ -112,6 +121,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         self.assertAlmostEqual(np.cos(2.2), result2.val)
         self.assertAlmostEqual(-np.sin(2.2) * 1, result2.derv)
 
+    # test scalar tangent operation
     def test_tan_scalar(self):
         result1 = var5.tan()
         result2 = var2.tan()
@@ -121,12 +131,14 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         self.assertAlmostEqual(np.tan(2.2), result2.val)
         self.assertAlmostEqual(1 / (np.cos(2.2) ** 2), result2.derv)
 
+    # test erorr handling in scalar tangent operation
     def test_tan_scalar_invalid_value(self):
         with self.assertRaises(ValueError) as e:
             var = val_derv(3 * np.pi / 2, 1)
             var.tan()
         self.assertEqual("ERROR: Input to tan should not be an odd mutiple of pi/2", str(e.exception))
 
+    # test scalar hyperbolic sine operation
     def test_sinh_scalar(self):
         result1 = var5.sinh()
         result2 = var2.sinh()
@@ -136,6 +148,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         self.assertAlmostEqual(np.sinh(2.2), result2.val)
         self.assertAlmostEqual(np.cosh(2.2) * 1, result2.derv)
 
+    # test scalar hyperbolic cosine operation
     def test_cosh_scalar(self):
         result1 = var5.cosh()
         result2 = var2.cosh()
@@ -145,6 +158,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         self.assertAlmostEqual(np.cosh(2.2), result2.val)
         self.assertAlmostEqual(np.sinh(2.2) * 1, result2.derv)
 
+    # test scalar hyperbolic tangent operation
     def test_tanh_scalar(self):
         result1 = var5.tanh()
         result2 = var2.tanh()
@@ -154,6 +168,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         self.assertAlmostEqual(np.tanh(2.2), result2.val)
         self.assertAlmostEqual((1 - np.tanh(2.2) ** 2) * 1, result2.derv)
 
+    # test scalar logarithmic operation
     def test_log_scalar(self):
         result = var2.log()
         self.assertAlmostEqual(np.log(2.2), result.val)
@@ -163,6 +178,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         self.assertAlmostEqual(np.log(2.2) / np.log(10), result2.val)
         self.assertAlmostEqual((1 / (2.2 * np.log(10))) * 1, result2.derv)
 
+    # test error handling in scalar logarithmic operation
     def test_log_scalar_invalid_value(self):
         with self.assertRaises(ValueError) as e:
             result = var3.log()
@@ -177,6 +193,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
             result3 = var2.log(-1)
         self.assertEqual("ERROR: LOG base should be greater than 0 and not equal to 1", str(e.exception))
 
+    # test scalar exponential operation
     def test_exp_scalar(self):
         result1 = var2.exp()
         result2 = var1.exp()
@@ -186,11 +203,13 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         self.assertAlmostEqual(np.exp(1), result2.val)
         self.assertAlmostEqual(np.exp(1) * 1, result2.derv)
 
+    # test scalar inverse sine operation
     def test_scalar_arcsin(self):
         arc_sin_res = var9.arcsin()
         self.assertAlmostEqual(np.arcsin(0.5), arc_sin_res.val)
         self.assertAlmostEqual(1 / np.sqrt((1 - 0.5 ** 2)), arc_sin_res.derv)
 
+    # test error handling in scalar inverse sine operation
     def test_scalar_arcsin_invalid(self):
         with self.assertRaises(ValueError) as e:
             var7.arcsin()
@@ -208,11 +227,13 @@ class Val_Derv_Elem_Test(unittest.TestCase):
             var3.arcsin()
         self.assertEqual("ERROR: Input to arcsin() should be between -1 and 1", str(e.exception))
 
+    # test scalar inverse cosine operation
     def test_scalar_arccos(self):
         arc_cos_res = var9.arccos()
         self.assertAlmostEqual(np.arccos(0.5), arc_cos_res.val)
         self.assertAlmostEqual(- 1 / np.sqrt((1 - 0.5 ** 2)), arc_cos_res.derv)
 
+    # test error handling in scalar inverse cosine operation
     def test_scalar_arccos_invalid(self):
         with self.assertRaises(ValueError) as e:
             var7.arccos()
@@ -230,6 +251,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
             var3.arccos()
         self.assertEqual("ERROR: Input to arccos() should be between -1 and 1", str(e.exception))
 
+    # test scalar inverse tangent operation
     def test_scalar_arctan(self):
         arc_tan_res_float = var9.arctan()
         self.assertAlmostEqual(np.arctan(0.5), arc_tan_res_float.val)
@@ -239,6 +261,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         self.assertAlmostEqual(np.arctan(3), arc_tan_res_int.val)
         self.assertAlmostEqual(1 / (1 + 3 ** 2), arc_tan_res_int.derv)
 
+    # test scalar power operation
     def test_scalar_power(self):
         # integer base float power
         power_res_int_float = var8 ** var9
@@ -265,54 +288,63 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         self.assertAlmostEqual(2 ** 3, power_res_real.val)
         self.assertAlmostEqual((2 ** 3) * (np.log(2)), power_res_real.derv)
 
+    # test error handling in scalar power operation
     def test_scalar_power_invalid(self):
         with self.assertRaises(ValueError) as e:
             var10 ** var9
-        self.assertEqual("ERROR: Power function does not have a derivative at 0 if the exponent is less than 1",
+        self.assertEqual("ERROR: Attempted to find derivative at 0 when exponent is less than 1",
                          str(e.exception))
 
         with self.assertRaises(ValueError) as e:
             var7 ** var9
-        self.assertEqual("ERROR: Cannot raise a negative number to a fraction with even denominator", str(e.exception))
+        self.assertEqual("ERROR: Attempted to raise a negative number to a fraction with even denominator",
+                         str(e.exception))
 
         with self.assertRaises(ValueError) as e:
             var7 ** 0.5
-        self.assertEqual("ERROR: Cannot raise a negative number to a fraction with even denominator", str(e.exception))
+        self.assertEqual("ERROR: Attempted to raise a negative number to a fraction with even denominator",
+                         str(e.exception))
 
         with self.assertRaises(ValueError) as e:
             var10 ** 0.5
-        self.assertEqual("ERROR: Power function does not have a derivative at 0 if the exponent is less than 1",
+        self.assertEqual("ERROR: Attempted to find derivative at 0 when exponent is less than 1",
                          str(e.exception))
 
+    # test object string representation format
     def test_val_derv_repr(self):
         self.assertEqual("Values:1, Derivatives:1", var1.__repr__())
         self.assertEqual("Values:-5.3, Derivatives:1", var4.__repr__())
 
+    # test value getter of object
     def test_val_derv_val(self):
         self.assertAlmostEqual(1, var1.val)
         self.assertAlmostEqual(-5.3, var4.val)
 
+    # test derivative getter of object
     def test_val_derv_derv(self):
         self.assertAlmostEqual(1, var1.derv)
         self.assertAlmostEqual(1, var4.derv)
 
+    # test derivative setter of object
     def test_val_derv_val_setter(self):
         var1.val, var4.val = -1, 10
         self.assertAlmostEqual(-1, var1.val)
         self.assertAlmostEqual(10, var4.val)
 
-        # reset the values back to the original setting for other tests
+        # reset updated values back to the original setting for other tests
         var1.val = 1
         var4.val = -5.3
 
+    # test invalid value setter of object
     def test_val_derv_val_setter_invalid(self):
         with self.assertRaises(TypeError) as e:
             var1.val = 'a'
         self.assertEqual("ERROR: Input value should be an int or float.", str(e.exception))
 
-        # reset the values back to the original setting for other tests
+        # reset updated values back to the original setting for other tests
         var1.val = 1
 
+    # test derivative setter of object
     def test_val_derv_derv_setter(self):
         var1.derv, var3.derv, var4.derv = 10, np.array([2]), [1, 2]
 
@@ -320,34 +352,41 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         np.testing.assert_array_almost_equal([2], var3.derv)
         np.testing.assert_array_almost_equal([1, 2], var4.derv)
 
-        # reset the derivatives back to the original setting for other tests
+        # reset updated derivatives back to the original setting for other tests
         var1.derv = 1
         var3.derv = 1
         var4.derv = 1
 
+    # test invalid derivative setter of object
     def test_val_derv_derv_setter_invalid(self):
         with self.assertRaises(ValueError) as e:
             var1.derv = np.array(['a'])
         self.assertEqual("ERROR: Input value should be an int or float.", str(e.exception))
-        # reset the values back to the original setting for other tests
+
+        # reset updated values back to the original setting for other tests
         var1.derv = 1
 
         with self.assertRaises(TypeError) as e:
             var1.derv = 'a'
-        self.assertEqual("ERROR: Input value must contain an array of ints/floats or be a scalar int/float.", str(e.exception))
-        # reset the values back to the original setting for other tests
+        self.assertEqual("ERROR: Input value must contain an array of ints/floats or be a scalar int/float.",
+                         str(e.exception))
+
+        # reset updated values back to the original setting for other tests
         var1.derv = 1
 
         with self.assertRaises(TypeError) as e:
             var1.derv = [1, 'a', 0.1]
-        self.assertEqual("ERROR: Input value must contain an array of ints/floats or be a scalar int/float.", str(e.exception))
-        # reset the values back to the original setting for other tests
+        self.assertEqual("ERROR: Input value must contain an array of ints/floats or be a scalar int/float.",
+                         str(e.exception))
+
+        # reset updated values back to the original setting for other tests
         var1.derv = 1
 
+    # test type-checker of list/array contents helper function
     def test_var_type(self):
         x_1, x_2, x_3, x_4, x_5 = 1, 10, 'a', 'deriv', ['d', 'e', 'r', 'i', 'v']
         x_6, x_7, x_8, x_9, x_10 = [1, 'e', 2, 'i', 'v'], [1, 2, 3, 4, 5], \
-                             ["test", 3, 0, 'c'], [-1, 0, 10, 'a'], [0.1, 0.2, -10]
+                                   ["test", 3, 0, 'c'], [-1, 0, 10, 'a'], [0.1, 0.2, -10]
 
         self.assertEqual(var_type(x_1), True)
         self.assertEqual(var_type(x_2), True)

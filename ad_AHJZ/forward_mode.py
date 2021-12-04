@@ -12,6 +12,8 @@ from val_derv import val_derv
 
 def combine_vector_inputs(function_list, n_col):
     """
+    function to combine a list of values and derivatives for vector cases
+
     Parameters
     ----------
     function_list: list object of functions
@@ -24,16 +26,17 @@ def combine_vector_inputs(function_list, n_col):
 
     Examples
     --------
+    # instantiate a seed vector function
     >>> def seed(position):
     >>>     seed_vector = np.zeros(2)
     >>>     seed_vector[position] = 1
     >>>     return seed_vector
-
+    # append all val_derv objects to a simple list
     >>> inputs = [1, 2]
     >>> var_init = []
     >>> for i, value in enumerate(inputs):
     >>>     var_init.append(val_derv(inputs[i], seed(i)))
-
+    # create a function to take the derivative of and combine the inputs to receive a vector output
     >>> func = lambda x,y: np.array([x + y, x * y])
     >>> res = func(*var_init)
     >>> funct_val, funct_der = combine_vector_inputs(res, 2)
@@ -42,6 +45,7 @@ def combine_vector_inputs(function_list, n_col):
     >>> print(funct_der)
     [[1. 1.]
     [2. 1.]]
+
     """
 
     # determine the number of functions inputted
@@ -51,12 +55,13 @@ def combine_vector_inputs(function_list, n_col):
     funct_val = np.empty(number_functions)
     funct_der = np.empty([number_functions, n_col])
 
-    # compute the function and derivative value for each of the functions
+    # compute the function and derivative value for each of the input functions
     for i, funct in enumerate(function_list):
         funct_val[i] = funct.val
         funct_der[i] = funct.derv
 
     return funct_val, funct_der
+
 
 class forward_mode:
 
@@ -72,7 +77,7 @@ class forward_mode:
 
         Returns
         -------
-        function value
+        evaluated value of the input function
 
         Examples
         --------
@@ -99,6 +104,7 @@ class forward_mode:
         >>> fm = forward_mode(np.array([1, 1]), func)
         >>> fm.get_function_value()
         array([1., 2.])
+
         """
 
         return self.get_function_value_and_jacobian()[0]
@@ -111,7 +117,7 @@ class forward_mode:
 
         Returns
         -------
-        jacobian
+        jacobian of the input function
 
         Examples
         --------
@@ -141,6 +147,7 @@ class forward_mode:
         >>> fm.get_jacobian()
         array([[1., 1.],
                [1., 1.]])
+
         """
 
         return self.get_function_value_and_jacobian()[1]
@@ -153,7 +160,7 @@ class forward_mode:
 
         Returns
         -------
-        value and jacobian of the input function
+        evaluated value and jacobian of the input function
 
         Examples
         --------
@@ -183,9 +190,10 @@ class forward_mode:
         >>> fm.get_function_value_and_jacobian()
         (array([1., 2.]), array([[1., 1.],
                                  [1., 1.]]))
+
         """
 
-        # number of input values = number of variables = number of partial derivatives we want to compute
+        # number of input values = number of variables = number of partial derivatives to compute
         try:
             # find the number of terms to evaluate
             number_res = len(self.inputs)
@@ -209,11 +217,10 @@ class forward_mode:
 
         res = self.functions(*var_init)
 
+        # return the results for the scalar case
         try:
-            # return the results for the scalar case
             return res.val, res.derv
 
+        # return the results for the vector case
         except AttributeError:
-            # return the results for the vector case
             return combine_vector_inputs(res, number_res)
-
