@@ -47,6 +47,29 @@ def var_type(x):
 
 
 class val_derv:
+    """
+    A class representing a custom variable object to be used in automatic differentiation.
+    The class encapsulates the cases of both real and dual numbers, containing overloaded dunder methods
+    and overloaded elementary functions that are used in forward mode calculation.
+
+    Instance Variables
+    ----------
+    val: value of the val_derv object
+    derv: derivative(s) of the val_derv object
+
+    Returns
+    -------
+    A val_derv object that contains the value and derivative
+
+    Examples
+    --------
+    # sample instantiation and use case of val_derv object
+    >>> x_1 = val_derv(1, 1)
+    >>> x_2 = val_derv(1, 1)
+    >>> print(x_1 + x_2)
+    Values:2, Derivatives:2
+
+    """
 
     def __init__(self, val, derv_seed):
         """

@@ -65,7 +65,7 @@ def combine_vector_inputs(function_list, n_col):
 
 class forward_mode:
     """
-    Class to perform forward mode automatic differentiation, enabling a user
+    A class to perform forward mode automatic differentiation, enabling a user
     to output just the function values, just the derivative values, or both the
     function and derviative values in a tuple
 
