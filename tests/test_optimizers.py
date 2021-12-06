@@ -7,7 +7,7 @@
 
 import unittest
 import numpy as np
-from optimizers import Optimizer
+from ad_AHJZ.optimizers import Optimizer
 
 # create sample functions to find the minimum of through all unit test cases
 x = 1
@@ -20,13 +20,13 @@ class optimizerstest(unittest.TestCase):
 
     # test univariate function for ADAM optimizer
     def test_univariate_ADAM(self):
-        opt_time, val, curr_val = Optimizer.adam_optimizer(x, f_x, 1000)
+        opt_time, val, curr_val = Optimizer.ADAM(x, f_x, 1000)
         self.assertAlmostEqual(val, 0, places=3)
         self.assertAlmostEqual(curr_val[0], -1, places=3)
 
     # test multivariate function for ADAM optimizer
     def test_multivariate_ADAM(self):
-        opt_time, val, curr_val = Optimizer.adam_optimizer(xy, f_xy, 1000)
+        opt_time, val, curr_val = Optimizer.ADAM(xy, f_xy, 1000)
         self.assertAlmostEqual(val, 0, places=3)
         self.assertAlmostEqual(curr_val[0], 1, places=3)
         self.assertAlmostEqual(curr_val[1], -1, places=3)

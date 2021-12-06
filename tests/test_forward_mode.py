@@ -28,7 +28,7 @@ class forwardtest(unittest.TestCase):
             var_init.append(val_derv(inputs[i], seed(i)))
 
         # create a test function and combine the vector inputs
-        func = lambda x,y: np.array([x + y, x * y])
+        func = lambda x, y: np.array([x + y, x * y])
         res = func(*var_init)
         funct_val, funct_der = combine_vector_inputs(res, 2)
 
@@ -103,3 +103,43 @@ class forwardtest(unittest.TestCase):
         # test if array contents between our package and analytical solution are almost equal
         np.testing.assert_array_almost_equal(f_val, func_val(2))
         np.testing.assert_array_almost_equal(f_derv, func_derv(2))
+
+    # test the get_function_value() and get_jacobian_value() of an embedded univariate scalar function
+    def test_embedded_univariate_scalar_f(self):
+        # create a function, its analytical function value and derivative
+        func = lambda x: (x.sin()).exp() - (x ** 0.5).cos() * ((x.cos() ** 2.0 + x ** 2.0) ** 0.5).sin()
+        func_val = lambda x: np.exp(np.sin(x)) - np.cos(x ** 0.5) * np.sin((np.cos(x) ** 2.0 + x ** 2.0) ** 0.5)
+        func_derv = lambda x: 0.5 * x ** (-0.5) * np.sin(x ** 0.5) * np.sin((x ** 2.0 + np.cos(x) ** 2.0) ** 0.5) - \
+                              (1.0 * x ** 1.0 - 1.0 * np.sin(x) * np.cos(x) ** 1.0) * \
+                              (x ** 2.0 + np.cos(x) ** 2.0) ** (-0.5) * np.cos(x ** 0.5) * \
+                              np.cos((x ** 2.0 + np.cos(x) ** 2.0) ** 0.5) + np.exp(np.sin(x)) * np.cos(x)
+
+        # retrieve the package function value and derivative
+        ad = forward_mode(5.5, func)
+        f_val = ad.get_function_value()
+        f_derv = ad.get_jacobian()
+
+        # test if array contents between our package and analytical solution are almost equal
+        np.testing.assert_array_almost_equal(f_val, func_val(5.5))
+        np.testing.assert_array_almost_equal(f_derv, func_derv(5.5))
+
+    # test the get_function_value() and get_jacobian_value() of an embedded multivariate scalar function
+    def test_embedded_multivariate_vector_f(self):
+        # create a function, its analytical function value and derivative
+        val = np.array([1, 2, 3])
+        func = lambda x, y, z: ((x + y).logistic(), (y * z).logistic(), (z / x).logistic())
+        func_val = lambda x, y, z: (1 / (1 + np.exp(-(x + y))), 1 / (1 + np.exp(-(y * z))), 1 / (1 + np.exp(-(z / x))))
+        func_derv = lambda x, y, z: (
+            [np.exp(-x - y) / (np.exp(-x - y) + 1) ** 2, np.exp(-x - y) / (np.exp(-x - y) + 1) ** 2, 0],
+            [0, z * np.exp(-y * z) / (1 + np.exp(-y * z)) ** 2, y * np.exp(-y * z) / (1 + np.exp(-y * z)) ** 2],
+            [-z * np.exp(-z / x) / (x ** 2 * (1 + np.exp(-z / x)) ** 2), 0,
+             np.exp(-z / x) / (x * (1 + np.exp(-z / x)) ** 2)])
+
+        # retrieve the package function value and derivative
+        ad = forward_mode(val, func)
+        f_val = ad.get_function_value()
+        f_derv = ad.get_jacobian()
+
+        # test if array contents between our package and analytical solution are almost equal
+        np.testing.assert_array_almost_equal(f_val, func_val(1, 2, 3))
+        np.testing.assert_array_almost_equal(f_derv, func_derv(1, 2, 3))

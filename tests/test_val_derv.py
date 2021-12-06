@@ -26,14 +26,12 @@ class Val_Derv_Elem_Test(unittest.TestCase):
 
     # test scalar addition operation
     def test_scalar_add(self):
-        sum1_val = var1.val + var2.val
-        sum1_derv = var1.derv + var2.derv
-        sum1_rev_val = var2.val + var1.val
-        sum1_rev_derv = var2.derv + var1.derv
-        self.assertAlmostEqual(3.2, sum1_val)
-        self.assertAlmostEqual(2, sum1_derv)
-        self.assertAlmostEqual(3.2, sum1_rev_val)
-        self.assertAlmostEqual(2, sum1_rev_derv)
+        sum1 = var1 + var2
+        sum1_rev = var2 + var1
+        self.assertAlmostEqual(3.2, sum1.val)
+        self.assertAlmostEqual(2, sum1.derv)
+        self.assertAlmostEqual(3.2, sum1_rev.val)
+        self.assertAlmostEqual(2, sum1_rev.derv)
         sum1 = var1 + 2
         self.assertAlmostEqual(3, sum1.val)
 
@@ -267,23 +265,28 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         power_res_int_float = var8 ** var9
         self.assertAlmostEqual(3 ** 0.5, power_res_int_float.val)
         self.assertAlmostEqual((3 ** 0.5) * (np.log(3) + 0.5 / 3), power_res_int_float.derv)
+
         # integer base integer power
         power_res_int_int = var8 ** var8
         self.assertAlmostEqual(3 ** 3, power_res_int_int.val)
         self.assertAlmostEqual((3 ** 3) * (np.log(3) + 3 / 3), power_res_int_int.derv)
+
         # float base integer power
         power_res_float_int = var9 ** var8
         self.assertAlmostEqual(0.5 ** 3, power_res_float_int.val)
         self.assertAlmostEqual((0.5 ** 3) * (np.log(0.5) + 3 / 0.5), power_res_float_int.derv)
+
         # float base float power
         power_res_float_float = var9 ** var9
         self.assertAlmostEqual(0.5 ** 0.5, power_res_float_float.val)
         self.assertAlmostEqual((0.5 ** 0.5) * (np.log(0.5) + 0.5 / 0.5), power_res_float_float.derv)
 
+        # non-dual exponent
         power_res_real = var8 ** 2
         self.assertAlmostEqual(3 ** 2, power_res_real.val)
         self.assertAlmostEqual((3 ** 2) * (2 / 3), power_res_real.derv)
 
+        # non-dual base
         power_res_real = 2 ** var8
         self.assertAlmostEqual(2 ** 3, power_res_real.val)
         self.assertAlmostEqual((2 ** 3) * (np.log(2)), power_res_real.derv)
@@ -309,6 +312,16 @@ class Val_Derv_Elem_Test(unittest.TestCase):
             var10 ** 0.5
         self.assertEqual("ERROR: Attempted to find derivative at 0 when exponent is less than 1",
                          str(e.exception))
+
+    # test scalar logistic function
+    def test_logistic(self):
+        exp_var1 = var4.logistic()
+        self.assertAlmostEqual(1 / (1 + np.exp(5.3)), exp_var1.val)
+        self.assertAlmostEqual(np.exp(5.3) / ((np.exp(5.3) + 1) ** 2), exp_var1.derv)
+
+        exp_var2 = var5.logistic()
+        self.assertAlmostEqual(1 / (1 + np.exp(-2)), exp_var2.val)
+        self.assertAlmostEqual(np.exp(-2) / ((np.exp(-2) + 1) ** 2), exp_var2.derv)
 
     # test object string representation format
     def test_val_derv_repr(self):
@@ -339,7 +352,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
     def test_val_derv_val_setter_invalid(self):
         with self.assertRaises(TypeError) as e:
             var1.val = 'a'
-        self.assertEqual("ERROR: Input value should be an int or float.", str(e.exception))
+        self.assertEqual("ERROR: Input value should be an int or float", str(e.exception))
 
         # reset updated values back to the original setting for other tests
         var1.val = 1
@@ -361,14 +374,14 @@ class Val_Derv_Elem_Test(unittest.TestCase):
     def test_val_derv_derv_setter_invalid(self):
         with self.assertRaises(ValueError) as e:
             var1.derv = np.array(['a'])
-        self.assertEqual("ERROR: Input value should be an int or float.", str(e.exception))
+        self.assertEqual("ERROR: Input value should be an int or float", str(e.exception))
 
         # reset updated values back to the original setting for other tests
         var1.derv = 1
 
         with self.assertRaises(TypeError) as e:
             var1.derv = 'a'
-        self.assertEqual("ERROR: Input value must contain an array of ints/floats or be a scalar int/float.",
+        self.assertEqual("ERROR: Input value must contain an array of ints/floats or be a scalar int/float",
                          str(e.exception))
 
         # reset updated values back to the original setting for other tests
@@ -376,7 +389,7 @@ class Val_Derv_Elem_Test(unittest.TestCase):
 
         with self.assertRaises(TypeError) as e:
             var1.derv = [1, 'a', 0.1]
-        self.assertEqual("ERROR: Input value must contain an array of ints/floats or be a scalar int/float.",
+        self.assertEqual("ERROR: Input value must contain an array of ints/floats or be a scalar int/float",
                          str(e.exception))
 
         # reset updated values back to the original setting for other tests
@@ -398,3 +411,21 @@ class Val_Derv_Elem_Test(unittest.TestCase):
         self.assertEqual(var_type(x_8), False)
         self.assertEqual(var_type(x_9), False)
         self.assertEqual(var_type(x_10), True)
+
+    # test equal to operator
+    def test_equal(self):
+        var_temp = val_derv(1, 10)
+
+        self.assertEqual(var6 == var10, (True, True))
+        self.assertEqual(var5 == var6, (False, True))
+        self.assertEqual(var8 == var_temp, (False, False))
+        self.assertEqual(var1 == var_temp, (True, False))
+
+    # test not equal to operator
+    def test_not_equal(self):
+        var_temp = val_derv(1, 10)
+
+        self.assertEqual(var6 != var10, (False, False))
+        self.assertEqual(var5 != var6, (True, False))
+        self.assertEqual(var8 != var_temp, (True, True))
+        self.assertEqual(var1 != var_temp, (False, True))
