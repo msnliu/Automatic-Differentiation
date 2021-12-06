@@ -64,6 +64,33 @@ def combine_vector_inputs(function_list, n_col):
 
 
 class forward_mode:
+    """
+    Class to perform forward mode automatic differentiation, enabling a user
+    to output just the function values, just the derivative values, or both the
+    function and derviative values in a tuple
+
+    Instance Variables
+    ----------
+    input_values: a scalar value or a vector of values
+    input_function: a scalar function or a vector of functions
+
+    Examples
+    --------
+    # get function value
+    >>> func = lambda x: x**2 + 1
+    >>> fm = forward_mode(1, func)
+    >>> print(fm.get_function_value())
+    2
+
+    # get function derivative
+    >>> print(fm.get_jacobian())
+    array([2.])
+
+    # get function value and derivative
+    >>> print(fm.get_function_value_and_jacobian())
+    (2, array([2.]))
+
+    """
 
     def __init__(self, input_values, input_function):
         self.inputs = input_values

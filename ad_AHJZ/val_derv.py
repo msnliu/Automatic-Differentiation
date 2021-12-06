@@ -30,6 +30,7 @@ def var_type(x):
     False
 
     """
+
     # if the input object is not a character and is a scalar, it must be numeric
     if not isinstance(x, str) and np.isscalar(x):
         return True
@@ -61,6 +62,7 @@ class val_derv:
         None
 
         """
+
         self.val = val
         self.derv = derv_seed
 
@@ -84,6 +86,7 @@ class val_derv:
         1
 
         """
+
         return self._val
 
     @val.setter
@@ -139,6 +142,7 @@ class val_derv:
         1
 
         """
+
         return self._derv
 
     @derv.setter
@@ -200,6 +204,7 @@ class val_derv:
         Values:1, Derivatives:2
 
         """
+
         return f'Values:{self.val}, Derivatives:{self.derv}'
 
     def __add__(self, other):
@@ -644,6 +649,7 @@ class val_derv:
         Values:1, Derivatives:[0. 0.]
 
         """
+
         # compute value and derivative of the reverse power function analogous to forward direction
         f = other ** self.val
         f_prime = (other ** self.val) * self.derv * np.log(other)
@@ -664,6 +670,23 @@ class val_derv:
 
         Examples
         --------
+        # equality of val_derv objects with the same contents
+        >>> val_derv1 = val_derv(1, 10)
+        >>> val_derv2 = val_derv(1, 10)
+        >>> print(val_derv1 == val_derv2)
+        (True, True)
+
+        # equality of val_derv objects with partially different contents
+        >>> val_derv1 = val_derv(1, 10)
+        >>> val_derv2 = val_derv(2, 10)
+        >>> print(val_derv1 == val_derv2)
+        (False, True)
+
+        # equality of val_derv objects with all different contents
+        >>> val_derv1 = val_derv(2, 1)
+        >>> val_derv2 = val_derv(1, 2)
+        >>> print(val_derv1 == val_derv2)
+        (False, False)
 
         """
 
@@ -696,6 +719,23 @@ class val_derv:
 
         Examples
         --------
+        # non-equality of val_derv objects with the same contents
+        >>> val_derv1 = val_derv(1, 10)
+        >>> val_derv2 = val_derv(1, 10)
+        >>> print(val_derv1 != val_derv2)
+        (False, False)
+
+        # non-equality of val_derv objects with partially different contents
+        >>> val_derv1 = val_derv(1, 10)
+        >>> val_derv2 = val_derv(2, 10)
+        >>> print(val_derv1 != val_derv2)
+        (True, False)
+
+        # non-equality of val_derv objects with all different contents
+        >>> val_derv1 = val_derv(2, 1)
+        >>> val_derv2 = val_derv(1, 2)
+        >>> print(val_derv1 != val_derv2)
+        (True, True)
 
         """
 
@@ -1005,6 +1045,7 @@ class val_derv:
         Values:1.0, Derivatives:[0. 0.]
 
         """
+
         # compute the value and derivative of the hyperbolic cosine function for any input
         f = np.cosh(self.val)
         f_prime = np.sinh(self.val)
@@ -1035,6 +1076,7 @@ class val_derv:
         Values:0.0, Derivatives:[1. 0.]
 
         """
+
         # compute the value and derivative of the hyperbolic tangent function for any input
         f = np.tanh(self.val)
         f_prime = 1 / (np.cosh(self.val) ** 2)
@@ -1149,6 +1191,7 @@ class val_derv:
         >>> x = val_derv(1, np.array([1, 0]))
         >>> print(x.arctan())
         Values:0.7853981633974483, Derivatives:[0.5 0. ]
+
         """
 
         # compute the value and derivative of the inverse tangent function for a valid input
@@ -1171,10 +1214,16 @@ class val_derv:
         Examples
         --------
         # logistic of variable with scalar derivative
+        >>> x = val_derv(1, 1)
+        >>> print(x.logistic())
+        Values:0.7310585786300049, Derivatives:0.19661193324148188
 
-        # logistic tangent of variable with vector derivative
+        # logistic of variable with vector derivative
+        >>> x = val_derv(1, np.array([1, 0]))
+        >>> print(x.logistic())
+        Values:0.7310585786300049, Derivatives:[0.19661193 0. ]
 
         """
 
-        return 1 / (self.exp() + 1)
+        return 1 / ((-self).exp() + 1)
 
