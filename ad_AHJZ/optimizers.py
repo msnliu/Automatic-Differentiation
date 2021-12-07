@@ -56,7 +56,7 @@ class Optimizer:
         Examples
         --------
         >>> x = 1
-        >>> f_x = lambda x: (-1 * np.log(x)) + (np.exp(x) * x**4) / 10
+        >>> f_x = lambda x: (-1 * x.log()) + (x.exp() * x**4) / 10
         >>> Optimizer.momentum(x, f_x, 1000)
         (0.24898195266723633, 0.26172998379097046, array([0.94233316]))
 
@@ -120,7 +120,7 @@ class Optimizer:
         Examples
         --------
         >>> x = 1
-        >>> f_x = lambda x: (-1 * np.log(x)) + (np.exp(x) * x**4) / 10
+        >>> f_x = lambda x: (-1 * x.log()) + (x.exp() * x**4) / 10
         >>> Optimizer.ADAM(x, f_x, 1000)
         (0.19765210151672363, 0.26172998379097046, array([0.94233316]))
 
@@ -135,6 +135,7 @@ class Optimizer:
         (0.08600378036499023, 5.0, array([1.]))
 
         """
+
         # start the timer
         start = time.time()
 
@@ -193,7 +194,7 @@ class Optimizer:
         Examples
         --------
         >>> x = 1
-        >>> f_x = lambda x: (-1 * np.log(x)) + (np.exp(x) * x**4) / 10
+        >>> f_x = lambda x: (-1 * x.log()) + (x.exp() * x**4) / 10
         >>> Optimizer.NADAM(x, f_x, 1000)
         (0.17513608932495117, 0.26172998379097046, array([0.94233316]))
 
@@ -266,7 +267,7 @@ class Optimizer:
         Examples
         --------
         >>> x = 1
-        >>> f_x = lambda x: (-1 * np.log(x)) + (np.exp(x) * x**4) / 10
+        >>> f_x = lambda x: (-1 * x.log()) + (x.exp() * x**4) / 10
         >>> Optimizer.RMSprop(x, f_x, 1000)
         (0.3034090995788574, 0.2618028370373199, array([0.93730206]))
 
@@ -279,6 +280,7 @@ class Optimizer:
         >>> f_x = lambda x: (x - 1)**2 + 5
         >>> Optimizer.RMSprop(x, f_x, 1000)
         (0.07326507568359375, 5.0, array([1.]))
+
         """
 
         # start the timer
@@ -326,7 +328,7 @@ class Optimizer:
         Examples
         --------
         >>> x = 1
-        >>> f_x = lambda x: (-1 * np.log(x)) + (np.exp(x)*x**4) / 10
+        >>> f_x = lambda x: (-1 * x.log()) + (x.exp() * x**4) / 10
         >>> Optimizer.broyden(x, f_x, 1000)
         (0.2750861644744873, 0.2617299838095016, array([0.94233569]))
 
@@ -341,6 +343,7 @@ class Optimizer:
         broyden: (0.0851430892944336, 5.000000001826295, array([1.00004274]))
 
         """
+
         # start the timer
         start = time.time()
         if np.isscalar(x):
@@ -394,7 +397,7 @@ class Optimizer:
         Examples
         --------
         >>> x = 1
-        >>> f_x = lambda x: (-1 * np.log(x)) + (np.exp(x)*x**4) / 10
+        >>> f_x = lambda x: (-1 * x.log()) + (x.exp() * x**4) / 10
         >>> Optimizer.BFGS(x, f_x, 1000)
         (0.2875189781188965, 0.2617299838095016, array([0.94233569]))
 
@@ -407,6 +410,7 @@ class Optimizer:
         >>> f_x = lambda x: (x - 1)**2 + 5
         >>> Optimizer.BFGS(x, f_x, 1000)
         ((0.08925986289978027, 5.000000001826295, array([1.00004274]))
+
         """
 
         # start the timer
