@@ -8,7 +8,7 @@
 #################################################################################
 
 import numpy as np
-from forward_mode import forward_mode
+from ad_AHJZ.forward_mode import forward_mode
 import time
 
 
