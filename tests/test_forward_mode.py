@@ -143,3 +143,69 @@ class forwardtest(unittest.TestCase):
         # test if array contents between our package and analytical solution are almost equal
         np.testing.assert_array_almost_equal(f_val, func_val(1, 2, 3))
         np.testing.assert_array_almost_equal(f_derv, func_derv(1, 2, 3))
+
+    # test a user-defined seed vector which is non-one scalar
+    def test_seed_vector_not_one_scalar(self):
+        # create a function, its analytical function value and derivative
+        func = lambda x: (x ** 2).exp()
+        ad = forward_mode(1, func, -2)
+        f_val = ad.get_function_value()
+        f_derv = ad.get_jacobian()
+        func_val = lambda x: np.exp(x ** 2)
+        func_derv = lambda x: 2 * x * (-2) * np.exp(x ** 2)
+
+        # test if array contents between our package and analytical solution are almost equal
+        np.testing.assert_array_almost_equal(f_val, func_val(1))
+        np.testing.assert_array_almost_equal(f_derv, func_derv(1))
+
+    # test a user-defined seed vector which is non-one vector
+    def test_seed_vector_not_one_vector(self):
+        # create a function, its analytical function value and derivative
+        val = np.array([1, 2, 3])
+        func = lambda x, y, z: x / (y * z)
+        ad = forward_mode(val, func, [-1, -2, 3])
+        f_val = ad.get_function_value()
+        f_derv = ad.get_jacobian()
+        func_val = lambda x, y, z: x / (y * z)
+        func_derv = lambda x, y, z: (-1 / (y * z), 2 * x / (y ** 2 * z), -3 * x / (y * z ** 2))
+
+        # test if array contents between our package and analytical solution are almost equal
+        np.testing.assert_array_almost_equal(f_val, func_val(1, 2, 3))
+        np.testing.assert_array_almost_equal(f_derv, func_derv(1, 2, 3))
+
+    # test a user-defined seed vector which is an array of length one
+    def test_seed_vector_not_one_invalid(self):
+        # create a function, its analytical function value and derivative
+        val = 1
+        func = lambda x: x.sqrt()
+        ad = forward_mode(val, func, [-1])
+        f_val = ad.get_function_value()
+        f_derv = ad.get_jacobian()
+        func_val = lambda x: np.sqrt(x)
+        func_derv = lambda x: -1 / 2 * x ** (-1 / 2)
+
+        # test if array contents between our package and analytical solution are almost equal
+        np.testing.assert_array_almost_equal(f_val, func_val(1))
+        np.testing.assert_array_almost_equal(f_derv, func_derv(1))
+
+    # test a user-defined seed vector which is an incorrect length (seed longer than input variables)
+    def test_seed_vector_incorrect_long_length(self):
+        # create a function, its analytical function value and derivative
+        val = 1
+        func = lambda x: x.sqrt()
+        ad = forward_mode(val, func, [-1, 2])
+
+        with self.assertRaises(ValueError) as e:
+            ad.get_function_value()
+        self.assertEqual("ERROR: Inputted seed vector length and number of variable mismatch", str(e.exception))
+
+    # test a user-defined seed vector which is an incorrect length (seed shorter than input variables)
+    def test_seed_vector_incorrect_short_length(self):
+        # create a function, its analytical function value and derivative
+        val = np.array([1, 2, 3])
+        func = lambda x, y, z: x / (y * z)
+        ad = forward_mode(val, func, [-1, 2])
+
+        with self.assertRaises(ValueError) as e:
+            ad.get_function_value_and_jacobian()
+        self.assertEqual("ERROR: Inputted seed vector length and number of variable mismatch", str(e.exception))
