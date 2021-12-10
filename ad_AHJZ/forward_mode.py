@@ -92,9 +92,10 @@ class forward_mode:
 
     """
 
-    def __init__(self, input_values, input_function):
+    def __init__(self, input_values, input_function, seed=1):
         self.inputs = input_values
         self.functions = input_function
+        self.seed = seed
 
     def get_function_value(self):
         """
@@ -235,7 +236,16 @@ class forward_mode:
         # compute the seed vector based on the current position
         def seed(position):
             seed_vector = np.zeros(number_res)
-            seed_vector[position] = 1
+            if not np.isscalar(self.seed):
+                # handle the case of of an incorrect seed vector length
+                if len(seed_vector) != len(self.seed):
+                    raise ValueError("ERROR: Inputted seed vector length and number of variable mismatch")
+                if len(self.seed) == 1:
+                    seed_vector[position] = self.seed[0]
+                else:
+                    seed_vector[position] = self.seed[position]
+            else:
+                seed_vector[position] = self.seed
             return seed_vector
 
         # initialize each variable into a val_derv() object
