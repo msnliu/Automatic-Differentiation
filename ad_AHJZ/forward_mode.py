@@ -27,9 +27,19 @@ def combine_vector_inputs(function_list, n_col):
     Examples
     --------
     # instantiate a seed vector function
+    >>> seedvec = [1, -1]
+    >>> number_res = 2
     >>> def seed(position):
-    >>>     seed_vector = np.zeros(2)
-    >>>     seed_vector[position] = 1
+    >>>     seed_vector = np.zeros(number_res)
+    >>>     if not np.isscalar(seedvec):
+    >>>         if len(seed_vector) != len(seedvec):
+    >>>             raise ValueError("ERROR: Inputted seed vector length and number of variable mismatch")
+    >>>         if len(seedvec) == 1:
+    >>>             seed_vector[position] = seedvec[0]
+    >>>         else:
+    >>>             seed_vector[position] = seedvec[position]
+    >>>     else:
+    >>>         seed_vector[position] = seed
     >>>     return seed_vector
     # append all val_derv objects to a simple list
     >>> inputs = [1, 2]
@@ -43,8 +53,8 @@ def combine_vector_inputs(function_list, n_col):
     >>> print(funct_val)
     [3. 2.]
     >>> print(funct_der)
-    [[1. 1.]
-    [2. 1.]]
+    [[ 1. -1.]
+     [ 2. -1.]]
 
     """
 
@@ -73,22 +83,23 @@ class forward_mode:
     ----------
     input_values: a scalar value or a vector of values
     input_function: a scalar function or a vector of functions
+    seed: a seed vector (optional parameter: default value = 1)
 
     Examples
     --------
     # get function value
     >>> func = lambda x: x**2 + 1
-    >>> fm = forward_mode(1, func)
-    >>> print(fm.get_function_value())
+    >>> fm = forward_mode(1, func, -1)
+    >>> fm.get_function_value()
     2
 
     # get function derivative
-    >>> print(fm.get_jacobian())
-    array([2.])
+    >>> fm.get_jacobian()
+    array([-2.])
 
     # get function value and derivative
-    >>> print(fm.get_function_value_and_jacobian())
-    (2, array([2.]))
+    >>> fm.get_function_value_and_jacobian()
+    (2, array([-2.]))
 
     """
 
@@ -111,25 +122,25 @@ class forward_mode:
         --------
         # get univariate scalar function value
         >>> func = lambda x: x
-        >>> fm = forward_mode(1, func)
+        >>> fm = forward_mode(1, func, -1)
         >>> fm.get_function_value()
         1
 
         # get univariate vector function value
         >>> func = lambda x: (x, 2*x, x**2)
-        >>> fm = forward_mode(1, func)
+        >>> fm = forward_mode(1, func, 1)
         >>> fm.get_function_value()
         array([1., 2., 1.])
 
         # get multivariate scalar function value
         >>> func = lambda x, y: x + y
-        >>> fm = forward_mode(np.array([1, 1]), func)
+        >>> fm = forward_mode(np.array([1, 1]), func, [1, -1])
         >>> fm.get_function_value()
         2
 
         # get multivariate vector function value
         >>> func = lambda x, y: (x.log() + y, x + y)
-        >>> fm = forward_mode(np.array([1, 1]), func)
+        >>> fm = forward_mode(np.array([1, 1]), func, [1, -1])
         >>> fm.get_function_value()
         array([1., 2.])
 
@@ -151,30 +162,30 @@ class forward_mode:
         --------
         # get univariate scalar function jacobian
         >>> func = lambda x: x
-        >>> fm = forward_mode(1, func)
+        >>> fm = forward_mode(1, func, -1)
         >>> fm.get_jacobian()
-        array([1.])
+        array([-1.])
 
         # get univariate vector function jacobian
         >>> func = lambda x: (x, 2*x, x**2)
-        >>> fm = forward_mode(1, func)
+        >>> fm = forward_mode(1, func, -1)
         >>> fm.get_jacobian()
-        array([[1.],
-               [2.],
-               [2.]])
+        array([[-1.],
+               [-2.],
+               [-2.]])
 
         # get multivariate scalar function jacobian
         >>> func = lambda x, y: x + y
-        >>> fm = forward_mode(np.array([1, 1]), func)
+        >>> fm = forward_mode(np.array([1, 1]), func, [1, -1])
         >>> fm.get_jacobian()
-        array([1., 1.])
+        array([ 1., -1.])
 
         # get multivariate vector function jacobian
         >>> func = lambda x, y: (x.log() + y, x + y)
-        >>> fm = forward_mode(np.array([1, 1]), func)
+        >>> fm = forward_mode(np.array([1, 1]), func, [1, -1])
         >>> fm.get_jacobian()
-        array([[1., 1.],
-               [1., 1.]])
+        array([[ 1., -1.],
+               [ 1., -1.]])
 
         """
 
@@ -194,30 +205,30 @@ class forward_mode:
         --------
         # get univariate scalar function value and jacobian
         >>> func = lambda x: x
-        >>> fm = forward_mode(1, func)
+        >>> fm = forward_mode(1, func, -1)
         >>> fm.get_function_value_and_jacobian()
-        (1, array([1.]))
+        (1, array([-1.]))
 
         # get univariate vector function value and jacobian
         >>> func = lambda x: (x, 2*x, x**2)
-        >>> fm = forward_mode(1, func)
+        >>> fm = forward_mode(1, func, -1)
         >>> fm.get_function_value_and_jacobian()
-        (array([1., 2., 1.]), array([[1.],
-                                     [2.],
-                                     [2.]]))
+        (array([1., 2., 1.]), array([[-1.],
+                                     [-2.],
+                                     [-2.]]))
 
         # get multivariate scalar function value and jacobian
         >>> func = lambda x, y: x + y
-        >>> fm = forward_mode(np.array([1, 1]), func)
+        >>> fm = forward_mode(np.array([1, 1]), func, [1, -1])
         >>> fm.get_function_value_and_jacobian()
-        (2, array([1., 1.]))
+        (2, array([ 1., -1.]))
 
         # get multivariate vector function value and jacobian
         >>> func = lambda x, y: (x.log() + y, x + y)
-        >>> fm = forward_mode(np.array([1, 1]), func)
+        >>> fm = forward_mode(np.array([1, 1]), func, [1, -1])
         >>> fm.get_function_value_and_jacobian()
-        (array([1., 2.]), array([[1., 1.],
-                                 [1., 1.]]))
+        (array([1., 2.]), array([[ 1., -1.],
+                                 [ 1., -1.]]))
 
         """
 

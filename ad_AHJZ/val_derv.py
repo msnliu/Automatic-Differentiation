@@ -50,7 +50,7 @@ class val_derv:
     """
     A class representing a custom variable object to be used in automatic differentiation.
     The class encapsulates the cases of both real and dual numbers, containing overloaded dunder methods
-    and overloaded elementary functions that are used in forward mode calculation.
+    and overloaded elementary functions that are used in forward mode calculation
 
     Instance Variables
     ----------
@@ -64,10 +64,10 @@ class val_derv:
     Examples
     --------
     # sample instantiation and use case of val_derv object
-    >>> x_1 = val_derv(1, 1)
-    >>> x_2 = val_derv(1, 1)
+    >>> x_1 = val_derv(1, -1)
+    >>> x_2 = val_derv(1, 2)
     >>> print(x_1 + x_2)
-    Values:2, Derivatives:2
+    Values:2, Derivatives:1
 
     """
 
@@ -77,8 +77,8 @@ class val_derv:
 
         Parameters
         ----------
-        val: An integer or float object that represents the variable value
-        derv_seed: An integer or float object that represents the seed value for the variable derivative
+        val: integer or float object that represents the variable value
+        derv_seed: integer or float object that represents the seed value for the variable derivative
 
         Returns
         -------
@@ -119,7 +119,7 @@ class val_derv:
 
         Parameters
         ----------
-        val: A float or integer object that represents the value of the val_derv object
+        val: float or integer object that represents the value of the val_derv object
 
         Returns
         -------
@@ -175,7 +175,7 @@ class val_derv:
 
         Parameters
         ----------
-        derv: A float/integer object or 1D array of float/integer objects that represents val_derv derivative
+        derv: float/integer object or 1D array of float/integer objects that represents val_derv derivative
 
         Returns
         -------
@@ -236,7 +236,7 @@ class val_derv:
 
         Parameters
         ----------
-        other: A float/integer object or val_derv object
+        other: float/integer object or val_derv object
 
         Returns
         -------
@@ -245,16 +245,16 @@ class val_derv:
         Examples
         --------
         # add of variables with scalar derivative
-        >>> x_1 = val_derv(1, 1)
-        >>> x_2 = val_derv(1, 1)
+        >>> x_1 = val_derv(1, -1)
+        >>> x_2 = val_derv(1, 2)
         >>> print(x_1 + x_2)
-        Values:2, Derivatives:2
+        Values:2, Derivatives:1
 
         # add of variables with vector derivative
-        >>> x = val_derv(1, np.array([1, 0]))
-        >>> y = val_derv(1, np.array([0, 1]))
+        >>> x = val_derv(1, np.array([-1, 0]))
+        >>> y = val_derv(1, np.array([0, 2]))
         >>> print(x + y)
-        Values:2, Derivatives:[1 1]
+        Values:2, Derivatives:[-1  2]
 
         """
 
@@ -283,16 +283,16 @@ class val_derv:
         Examples
         --------
         # subtraction of variable with scalar derivative
-        >>> x_1 = val_derv(1, 1)
-        >>> x_2 = val_derv(1, 1)
+        >>> x_1 = val_derv(1, -1)
+        >>> x_2 = val_derv(1, 2)
         >>> print(x_1 - x_2)
-        Values:0, Derivatives:0
+        Values:0, Derivatives:-3
 
         # subtraction of variable with vector derivative
-        >>> x = val_derv(1, np.array([1, 0]))
-        >>> y = val_derv(1, np.array([0, 1]))
+        >>> x = val_derv(1, np.array([-1, 0]))
+        >>> y = val_derv(1, np.array([0, 2]))
         >>> print(x - y)
-        Values:0, Derivatives:[ 1 -1]
+        Values:0, Derivatives:[-1 -2]
 
         """
 
@@ -312,7 +312,7 @@ class val_derv:
 
         Parameters
         ----------
-        other: A float/integer object or val_derv object
+        other: float/integer object or val_derv object
 
         Returns
         -------
@@ -321,16 +321,16 @@ class val_derv:
         Examples
         --------
         # multiplication of variable with scalar derivative
-        >>> x_1 = val_derv(1, 1)
-        >>> x_2 = val_derv(1, 1)
+        >>> x_1 = val_derv(1, -1)
+        >>> x_2 = val_derv(1, 2)
         >>> print(x_1 * x_2)
-        Values:1, Derivatives:2
+        Values:1, Derivatives:1
 
         # multiplication of variable with vector derivative
-        >>> x = val_derv(1, np.array([1, 0]))
-        >>> y = val_derv(1, np.array([0, 1]))
+        >>> x = val_derv(1, np.array([-1, 0]))
+        >>> y = val_derv(1, np.array([0, 2]))
         >>> print(x * y)
-        Values:1, Derivatives:[1 1]
+        Values:1, Derivatives:[-1  2]
 
         """
 
@@ -350,7 +350,7 @@ class val_derv:
 
         Parameters
         ----------
-        other: A float/integer object or val_derv object
+        other: float/integer object or val_derv object
 
         Returns
         -------
@@ -363,25 +363,25 @@ class val_derv:
         Examples
         --------
         # true division of variable with scalar derivative
-        >>> x_1 = val_derv(1, 1)
-        >>> x_2 = val_derv(1, 1)
+        >>> x_1 = val_derv(1, -1)
+        >>> x_2 = val_derv(1, 2)
         >>> print(x_1 / x_2)
-        Values:1.0, Derivatives:0.0
+        Values:1.0, Derivatives:-3.0
 
         # true division of variable with vector derivative
-        >>> x = val_derv(1, np.array([1, 0]))
-        >>> y = val_derv(1, np.array([0, 1]))
+        >>> x = val_derv(1, np.array([-1, 0]))
+        >>> y = val_derv(1, np.array([0, 2]))
         >>> print(x / y)
-        Values:1.0, Derivatives:[ 1. -1.]
+        Values:1.0, Derivatives:[-1. -2.]
 
         # ZeroDivisionError if denominator in division is zero
-        >>> x_1 = val_derv(1, 1)
-        >>> x_2 = val_derv(0, 1)
+        >>> x_1 = val_derv(1, -1)
+        >>> x_2 = val_derv(0, 2)
         >>> print(x_1 / x_2)
         ZeroDivisionError: ERROR: Denominator in division should not be 0
 
         # ZeroDivisionError if denominator in division is zero
-        >>> x_1 = val_derv(1, 1)
+        >>> x_1 = val_derv(1, -1)
         >>> x_2 = 0
         >>> print(x_1 / x_2)
         ZeroDivisionError: ERROR: Denominator in division should not be 0
@@ -420,14 +420,14 @@ class val_derv:
         Examples
         --------
         # negation of variable with scalar derivative
-        >>> x = val_derv(1, 1)
+        >>> x = val_derv(1, -1)
         >>> print(-x)
-        Values:-1, Derivatives:-1
+        Values:-1, Derivatives:1
 
         # negation of variable with vector derivative
-        >>> x = val_derv(1, np.array([1, 0]))
+        >>> x = val_derv(1, np.array([-1, 0]))
         >>> print(-x)
-        Values:-1, Derivatives:[-1  0]
+        Values:-1, Derivatives:[1 0]
 
         """
 
@@ -439,7 +439,7 @@ class val_derv:
 
         Parameters
         ----------
-        other: A float/integer object or val_derv object
+        other: float/integer object or val_derv object
 
         Returns
         -------
@@ -454,26 +454,26 @@ class val_derv:
         Examples
         --------
         # power of variable with scalar derivative
-        >>> x_1 = val_derv(1, 1)
-        >>> x_2 = val_derv(1, 1)
+        >>> x_1 = val_derv(1, -1)
+        >>> x_2 = val_derv(1, 2)
         >>> print(x_1 ** x_2)
-        Values:1, Derivatives:1.0
+        Values:1, Derivatives:-1.0
 
         # power of variable with vector derivative
-        >>> x = val_derv(1, np.array([1, 0]))
-        >>> y = val_derv(1, np.array([0, 1]))
+        >>> x = val_derv(1, np.array([-1, 0]))
+        >>> y = val_derv(1, np.array([0, 2]))
         >>> print(x ** y)
-        Values:1, Derivatives:[1. 0.]
+        Values:1, Derivatives:[-1.  0.]
 
         # ValueError if negative number is raised to a fraction with an even denominator
-        >>> x_1 = val_derv(-1, 1)
-        >>> x_2 = val_derv(0.5, 1)
+        >>> x_1 = val_derv(-1, -1)
+        >>> x_2 = val_derv(0.5, 2)
         >>> print(x_1 ** x_2)
         ValueError: ERROR: Attempted to raise a negative number to a fraction with even denominator
 
         # ValueError if exponent is less than 1 and differentiation occurs at 0
-        >>> x_1 = val_derv(0, 1)
-        >>> x_2 = val_derv(0.5, 1)
+        >>> x_1 = val_derv(0, -1)
+        >>> x_2 = val_derv(0.5, 2)
         >>> print(x_1 ** x_2)
         ValueError: ERROR: Attempted to find derivative at 0 when exponent is less than 1
 
@@ -514,7 +514,7 @@ class val_derv:
 
         Parameters
         ----------
-        other: A float/integer object
+        other: float/integer object
 
         Returns
         -------
@@ -524,15 +524,15 @@ class val_derv:
         --------
         # reverse addition of variable with scalar derivative
         >>> x_1 = 1
-        >>> x_2 = val_derv(1, 1)
+        >>> x_2 = val_derv(1, -1)
         >>> print(x_1 + x_2)
-        Values:2, Derivatives:1
+        Values:2, Derivatives:-1
 
         # reverse addition of variable with vector derivative
         >>> x = 1
-        >>> y = val_derv(1, np.array([0, 1]))
+        >>> y = val_derv(1, np.array([0, -1]))
         >>> print(x + y)
-        Values:2, Derivatives:[0 1]
+        Values:2, Derivatives:[ 0 -1]
 
         """
 
@@ -544,7 +544,7 @@ class val_derv:
 
         Parameters
         ----------
-        other: A float/integer object
+        other: float/integer object
 
         Returns
         -------
@@ -554,15 +554,15 @@ class val_derv:
         --------
         # reverse subtraction of variable with scalar derivative
         >>> x_1 = 1
-        >>> x_2 = val_derv(1, 1)
+        >>> x_2 = val_derv(1, -1)
         >>> print(x_1 - x_2)
-        Values:0, Derivatives:-1
+        Values:0, Derivatives:1
 
         # reverse subtraction of variable with vector derivative
         >>> x = 1
-        >>> y = val_derv(1, np.array([0, 1]))
+        >>> y = val_derv(1, np.array([0, -1]))
         >>> print(x - y)
-        Values:0, Derivatives:[ 0 -1]
+        Values:0, Derivatives:[0 1]
 
         """
 
@@ -574,7 +574,7 @@ class val_derv:
 
         Parameters
         ----------
-        other: A float/integer object
+        other: float/integer object
 
         Returns
         -------
@@ -584,15 +584,15 @@ class val_derv:
         --------
         # reverse multiplication of variable with scalar derivative
         >>> x_1 = 1
-        >>> x_2 = val_derv(1, 1)
+        >>> x_2 = val_derv(1, -1)
         >>> print(x_1 * x_2)
-        Values:1, Derivatives:1
+        Values:1, Derivatives:-1
 
         # reverse multiplication of variable with vector derivative
         >>> x = 1
-        >>> y = val_derv(1, np.array([0, 1]))
+        >>> y = val_derv(1, np.array([0, -1]))
         >>> print(x * y)
-        Values:1, Derivatives:[0 1]
+        Values:1, Derivatives:[ 0 -1]
 
         """
 
@@ -604,7 +604,7 @@ class val_derv:
 
         Parameters
         ----------
-        other: A float/integer object
+        other: float/integer object
 
         Returns
         -------
@@ -618,19 +618,19 @@ class val_derv:
         --------
         # reverse true division of variable with scalar derivative
         >>> x_1 = 1
-        >>> x_2 = val_derv(1, 1)
+        >>> x_2 = val_derv(1, -1)
         >>> print(x_1 / x_2)
-        Values:1.0, Derivatives:-1.0
+        Values:1.0, Derivatives:1.0
 
         # reverse true division of variable with vector derivative
         >>> x = 1
-        >>> y = val_derv(1, np.array([0, 1]))
+        >>> y = val_derv(1, np.array([0, -1]))
         >>> print(x / y)
-        Values:1.0, Derivatives:[ 0. -1.]
+        Values:1.0, Derivatives:[0. 1.]
 
         # ZeroDivisionError if denominator in division is zero
         >>> x_1 = 1
-        >>> x_2 = val_derv(0, 1)
+        >>> x_2 = val_derv(0, -1)
         >>> print(x_1 / x_2)
         ZeroDivisionError: ERROR: Denominator in division should not be 0
 
@@ -651,7 +651,7 @@ class val_derv:
 
         Parameters
         ----------
-        other: A float/integer object
+        other: float/integer object
 
         Returns
         -------
@@ -661,15 +661,15 @@ class val_derv:
         --------
         # reverse power of variable with scalar derivative
         >>> x_1 = 1
-        >>> x_2 = val_derv(1, 1)
+        >>> x_2 = val_derv(1, -1)
         >>> print(x_1 ** x_2)
-        Values:1, Derivatives:0.0
+        Values:1, Derivatives:-0.0
 
         # reverse power of variable with vector derivative
         >>> x = 1
-        >>> y = val_derv(1, np.array([0, 1]))
+        >>> y = val_derv(1, np.array([0, -1]))
         >>> print(x ** y)
-        Values:1, Derivatives:[0. 0.]
+        Values:1, Derivatives:[ 0. -0.]
 
         """
 
@@ -791,14 +791,14 @@ class val_derv:
         Examples
         --------
         # square root of variable with scalar derivative
-        >>> x = val_derv(1, 1)
+        >>> x = val_derv(1, -1)
         >>> print(x.sqrt())
-        Values:1.0, Derivatives:0.5
+        Values:1.0, Derivatives:-0.5
 
         # square root of variable with vector derivative
-        >>> x = val_derv(1, np.array([1, 0]))
+        >>> x = val_derv(1, np.array([-1, 0]))
         >>> print(x.sqrt())
-        Values:1.0, Derivatives:[0.5 0. ]
+        Values:1.0, Derivatives:[-0.5  0. ]
 
         """
 
@@ -807,7 +807,6 @@ class val_derv:
     def log(self, base=None):
         """
         method to compute the value and derivative of logarthmic function
-        Parameters
 
         Parameters
         ----------
@@ -827,10 +826,10 @@ class val_derv:
         Examples
         --------
         # ValueError if self.val is less than or equal to zero
-        >>> x = val_derv(0, 1)
+        >>> x = val_derv(0, -1)
         >>> print(x.log())
         ValueError: ERROR: Value for log should be greater than 0
-        >>> x = val_derv(-1, 1)
+        >>> x = val_derv(-1, 0)
         >>> print(x.log())
         ValueError: ERROR: Value for log should be greater than 0
 
@@ -838,22 +837,22 @@ class val_derv:
         >>> x = val_derv(1, 1)
         >>> print(x.log(base = -1))
         ValueError: ERROR: LOG base should be greater than 0 and not equal to 1
-        >>> x = val_derv(1, 1)
+        >>> x = val_derv(1, 2)
         >>> print(x.log(base = 1))
         ValueError: ERROR: LOG base should be greater than 0 and not equal to 1
-        >>> x = val_derv(1, 1)
+        >>> x = val_derv(1, 3)
         >>> print(x.log(base = 0))
         ValueError: ERROR: LOG base should be greater than 0 and not equal to 1
 
         # logarithm of variable with scalar derivative
-        >>> x = val_derv(1, 1)
+        >>> x = val_derv(1, -1)
         >>> print(x.log())
-        Values:0.0, Derivatives:1.0
+        Values:0.0, Derivatives:-1.0
 
         # logarithm of variable with vector derivative
-        >>> x = val_derv(1, np.array([1, 0]))
+        >>> x = val_derv(1, np.array([-1, 0]))
         >>> print(x.log())
-        Values:0.0, Derivatives:[1. 0.]
+        Values:0.0, Derivatives:[-1.  0.]
 
         """
 
@@ -890,14 +889,14 @@ class val_derv:
         Examples
         --------
         # exponential of variable with scalar derivative
-        >>> x = val_derv(0, 1)
+        >>> x = val_derv(0, -1)
         >>> print(x.exp())
-        Values:1.0, Derivatives:1.0
+        Values:1.0, Derivatives:-1.0
 
         # exponential of variable with vector derivative
-        >>> x = val_derv(0, np.array([1, 0]))
+        >>> x = val_derv(0, np.array([-1, 0]))
         >>> print(x.exp())
-        Values:1.0, Derivatives:[1. 0.]
+        Values:1.0, Derivatives:[-1.  0.]
 
         """
 
@@ -921,14 +920,14 @@ class val_derv:
         Examples
         --------
         # sine of variable with scalar derivative
-        >>> x = val_derv(0, 1)
+        >>> x = val_derv(0, -1)
         >>> print(x.sin())
-        Values:0.0, Derivatives:1.0
+        Values:0.0, Derivatives:-1.0
 
         # sine of variable with vector derivative
-        >>> x = val_derv(0, np.array([1, 0]))
+        >>> x = val_derv(0, np.array([-1, 0]))
         >>> print(x.sin())
-        Values:0.0, Derivatives:[1. 0.]
+        Values:0.0, Derivatives:[-1.  0.]
 
         """
 
@@ -952,14 +951,14 @@ class val_derv:
         Examples
         --------
         # cosine of variable with scalar derivative
-        >>> x = val_derv(0, 1)
+        >>> x = val_derv(0, -1)
         >>> print(x.cos())
-        Values:1.0, Derivatives:-0.0
+        Values:1.0, Derivatives:0.0
 
         # cosine of variable with vector derivative
-        >>> x = val_derv(0, np.array([1, 0]))
+        >>> x = val_derv(0, np.array([-1, 0]))
         >>> print(x.cos())
-        Values:1.0, Derivatives:[-0. -0.]
+        Values:1.0, Derivatives:[ 0. -0.]
 
         """
 
@@ -987,17 +986,17 @@ class val_derv:
         Examples
         --------
         # tangent of variable with scalar derivative
-        >>> x = val_derv(0, 1)
+        >>> x = val_derv(0, -1)
         >>> print(x.tan())
-        Values:0.0, Derivatives:1.0
+        Values:0.0, Derivatives:-1.0
 
         # tangent of variable with vector derivative
-        >>> x = val_derv(0, np.array([1, 0]))
+        >>> x = val_derv(0, np.array([-1, 0]))
         >>> print(x.tan())
-        Values:0.0, Derivatives:[1. 0.]
+        Values:0.0, Derivatives:[-1.  0.]
 
         # ValueError if input is an odd multiple of pi/2
-        >>> x = val_derv(np.pi / 2, 1)
+        >>> x = val_derv(np.pi / 2, -1)
         >>> print(x.tan())
         ValueError: ERROR: Input to tan should not be an odd mutiple of pi/2
 
@@ -1027,14 +1026,14 @@ class val_derv:
         Examples
         --------
         # hyperbolic sine of variable with scalar derivative
-        >>> x = val_derv(0, 1)
+        >>> x = val_derv(0, -1)
         >>> print(x.sinh())
-        Values:0.0, Derivatives:1.0
+        Values:0.0, Derivatives:-1.0
 
         # hyperbolic sine of variable with vector derivative
-        >>> x = val_derv(0, np.array([1, 0]))
+        >>> x = val_derv(0, np.array([-1, 0]))
         >>> print(x.sinh())
-        Values:0.0, Derivatives:[1. 0.]
+        Values:0.0, Derivatives:[-1.  0.]
 
         """
 
@@ -1058,14 +1057,14 @@ class val_derv:
         Examples
         --------
         # hyperbolic cosine of variable with scalar derivative
-        >>> x = val_derv(0, 1)
+        >>> x = val_derv(0, -1)
         >>> print(x.cosh())
-        Values:1.0, Derivatives:0.0
+        Values:1.0, Derivatives:-0.0
 
         # hyperbolic cosine of variable with vector derivative
-        >>> x = val_derv(0, np.array([1, 0]))
+        >>> x = val_derv(0, np.array([-1, 0]))
         >>> print(x.cosh())
-        Values:1.0, Derivatives:[0. 0.]
+        Values:1.0, Derivatives:[-0.  0.]
 
         """
 
@@ -1089,14 +1088,14 @@ class val_derv:
         Examples
         --------
         # hyperbolic tangent of variable with scalar derivative
-        >>> x = val_derv(0, 1)
+        >>> x = val_derv(0, -1)
         >>> print(x.tanh())
-        Values:0.0, Derivatives:1.0
+        Values:0.0, Derivatives:-1.0
 
         # hyperbolic tangent of variable with vector derivative
-        >>> x = val_derv(0, np.array([1, 0]))
+        >>> x = val_derv(0, np.array([-1, 0]))
         >>> print(x.tanh())
-        Values:0.0, Derivatives:[1. 0.]
+        Values:0.0, Derivatives:[-1.  0.]
 
         """
 
@@ -1124,17 +1123,17 @@ class val_derv:
         Examples
         --------
         # inverse sine of variable with scalar derivative
-        >>> x = val_derv(0, 1)
+        >>> x = val_derv(0, -1)
         >>> print(x.arcsin())
-        Values:0.0, Derivatives:1.0
+        Values:0.0, Derivatives:-1.0
 
         # inverse sine of variable with vector derivative
-        >>> x = val_derv(0, np.array([1, 0]))
+        >>> x = val_derv(0, np.array([-1, 0]))
         >>> print(x.arcsin())
-        Values:0.0, Derivatives:[1. 0.]
+        Values:0.0, Derivatives:[-1.  0.]
 
         # ValueError for input outside of the interval -1 to 1
-        >>> x = val_derv(2, 1)
+        >>> x = val_derv(2, -1)
         >>> print(x.arcsin())
         ValueError: ERROR: Input to arcsin() should be between -1 and 1
 
@@ -1167,17 +1166,17 @@ class val_derv:
         Examples
         --------
         # inverse cosine of variable with scalar derivative
-        >>> x = val_derv(0, 1)
+        >>> x = val_derv(0, -1)
         >>> print(x.arccos())
-        Values:1.5707963267948966, Derivatives:-1.0
+        Values:1.5707963267948966, Derivatives:1.0
 
         # inverse cosine of variable with vector derivative
-        >>> x = val_derv(0, np.array([1, 0]))
+        >>> x = val_derv(0, np.array([-1, 0]))
         >>> print(x.arccos())
-        Values:1.5707963267948966, Derivatives:[-1. -0.]
+        Values:1.5707963267948966, Derivatives:[ 1. -0.]
 
         # ValueError for input outside of the interval -1 to 1
-        >>> x = val_derv(2, 1)
+        >>> x = val_derv(2, -1)
         >>> print(x.arccos())
         ValueError: ERROR: Input to arccos() should be between -1 and 1
 
@@ -1206,14 +1205,14 @@ class val_derv:
         Examples
         --------
         # inverse tangent of variable with scalar derivative
-        >>> x = val_derv(1, 1)
+        >>> x = val_derv(1, -1)
         >>> print(x.arctan())
-        Values:0.7853981633974483, Derivatives:0.5
+        Values:0.7853981633974483, Derivatives:-0.5
 
         # inverse tangent of variable with vector derivative
-        >>> x = val_derv(1, np.array([1, 0]))
+        >>> x = val_derv(1, np.array([-1, 0]))
         >>> print(x.arctan())
-        Values:0.7853981633974483, Derivatives:[0.5 0. ]
+        Values:0.7853981633974483, Derivatives:[-0.5  0. ]
 
         """
 
@@ -1237,14 +1236,14 @@ class val_derv:
         Examples
         --------
         # logistic of variable with scalar derivative
-        >>> x = val_derv(1, 1)
+        >>> x = val_derv(1, -1)
         >>> print(x.logistic())
-        Values:0.7310585786300049, Derivatives:0.19661193324148188
+        Values:0.7310585786300049, Derivatives:-0.19661193324148188
 
         # logistic of variable with vector derivative
-        >>> x = val_derv(1, np.array([1, 0]))
+        >>> x = val_derv(1, np.array([-1, 0]))
         >>> print(x.logistic())
-        Values:0.7310585786300049, Derivatives:[0.19661193 0. ]
+        Values:0.7310585786300049, Derivatives:[-0.19661193 -0.        ]
 
         """
 

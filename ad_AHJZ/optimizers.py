@@ -74,7 +74,7 @@ class Optimizer:
 
         # start the timer
         start = time.time()
-        # decay value must be between 0 and 1
+        # decay value must be great than or equal to 0 and less than 1
         if 0 <= beta < 1:
             mt, curr_val = 0, x
             fm = forward_mode(x, f_x)
@@ -139,7 +139,7 @@ class Optimizer:
         # start the timer
         start = time.time()
 
-        # decay values must be between 0 and 1
+        # decay value must be great than or equal to 0 and less than 1
         if 0 <= beta1 < 1:
             if 0 <= beta2 < 1:
                 # initialize moment and direction variables
@@ -212,7 +212,7 @@ class Optimizer:
 
         # start the timer
         start = time.time()
-        # decay values must be between 0 and 1
+        # decay value must be great than or equal to 0 and less than 1
         if 0 <= beta1 < 1:
             if 0 <= beta2 < 1:
                 # initialize moment and direction variables
@@ -285,7 +285,7 @@ class Optimizer:
 
         # start the timer
         start = time.time()
-        # decay value must be between 0 and 1
+        # decay value must be great than or equal to 0 and less than 1
         if 0 <= beta < 1:
             vt, curr_val = 0, x
             fm = forward_mode(x, f_x)
@@ -321,7 +321,7 @@ class Optimizer:
 
         Returns
         -------
-        opt_time: The time it takes to run the optimizer in seconds
+        opt_time: the time it takes to run the optimizer in seconds
         val: the position of the minimum value
         curr_val: the minimum value (can be in either scalar or vector form)
 
@@ -390,7 +390,7 @@ class Optimizer:
 
         Returns
         -------
-        opt_time: The time it takes to run the optimizer in seconds
+        opt_time: the time it takes to run the optimizer in seconds
         val: the position of the minimum value
         curr_val: the minimum value (can be in either scalar or vector form)
 
