@@ -13,7 +13,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 
 setuptools.setup(name='ad_AHJZ',
-      version='1.2',
+      version='1.9',
       packages= setuptools.find_packages(),
       author="Aditi Memani, Hari Raval, Joseph Zuccarelli, liuzongjun",
       description="A Package that calculates Automatic Differentiation for both Scalar and Vector Inputs",
