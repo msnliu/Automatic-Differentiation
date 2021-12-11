@@ -4,4 +4,4 @@ coverage report
 coverage xml
 curl -Os https://uploader.codecov.io/latest/macos/codecov
 chmod +x codecov
-./codecov -t 53e0875f-3502-40ec-adb9-16a4835398e8
+./codecov -t 1acd659b-39c1-4296-8d0d-55cabf3d2f38
